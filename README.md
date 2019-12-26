@@ -2,5 +2,8 @@
 
 If you are going to copy anything, please refer to documentation first.
 
+Using EXWM and trying to survive that way. If no commits are pushed, I'm dead.
+
 ## Todo
-- [ ] What's <s> all about?
+- [ ] What's `s` all about?
+- Better ways to switch between EXWM workspaces.
