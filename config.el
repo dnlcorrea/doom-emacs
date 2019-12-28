@@ -144,14 +144,37 @@
 
        (exwm-enable))
 
-(use-package lsp-ui-mode
-  :hook
-  'lsp-mode-hook)
-
 ;; Other
 (set-popup-rule! "^\\*EXWM*" :ignore t)
-(set-popup-rule! "PHP" :ignore t)
 
 (load! "dnl-functions")
 
 (start-process-shell-command "compton" nil "compton")
+
+(use-package lsp-mode
+  :config
+  (setq lsp-prefer-flymake nil
+	lsp-enable-file-watchers nil)
+  :commands lsp)
+
+(use-package lsp-ui
+  :requires lsp-mode flycheck
+  :config
+  (setq lsp-ui-doc-enable t
+	lsp-ui-doc-use-childframe nil
+	lsp-ui-doc-position 'right
+	lsp-ui-doc-include-signature nil
+	lsp-ui-sideline-enable t
+	lsp-ui-flycheck-enable t
+	lsp-ui-flycheck-list-position 'right
+	lsp-ui-flycheck-live-reporting t
+	lsp-ui-peek-enable t
+	lsp-ui-peek-list-width 60
+	lsp-ui-peek-peek-height 25
+	lsp-enable-file-watchers nil
+  lsp-ui-sideline-delay .8
+	lsp-ui-sideline-enable t))
+
+(use-package company-lsp :commands company-lsp)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
