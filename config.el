@@ -144,9 +144,13 @@
 
        (exwm-enable))
 
+(use-package lsp-ui-mode
+  :hook
+  'lsp-mode-hook)
 
 ;; Other
 (set-popup-rule! "^\\*EXWM*" :ignore t)
+(set-popup-rule! "PHP" :ignore t)
 
 (load! "dnl-functions")
 

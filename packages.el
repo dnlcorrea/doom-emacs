@@ -43,3 +43,4 @@
 ;(package! builtin-package :recipe (:branch "develop"))
 
 (package! exwm)
+(package! lsp-ui)
