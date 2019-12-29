@@ -51,130 +51,120 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 (use-package exwm
-	     :config
-       (setq doom-leader-alt-key "M-SPC"
-             doom-localleader-alt-key "s-SPC m")
-       (exwm-input-set-key (kbd "s-<return>") #'dnl-terminal-huge)
-       (exwm-input-set-key (kbd "s-'") #'shell-command)
-       (exwm-input-set-key (kbd "s-g") (lambda () (interactive) (start-process-shell-command "Google" nil (concat browser " --new-window"))))
-       (exwm-input-set-key (kbd "s-G") (lambda () (interactive) (start-process-shell-command "Cacafire" nil "firefox")))
-       (exwm-input-set-key (kbd "s-<SPC>") 'ivy-switch-buffer)
-       (exwm-input-set-key (kbd "s-x") 'counsel-M-x)
-       (exwm-input-set-key (kbd "s-/") 'exwm-layout-toggle-fullscreen)
-       (exwm-input-set-key (kbd "s-,") 'evil-prev-buffer)
-       (exwm-input-set-key (kbd "s-.") 'evil-next-buffer)
-       (exwm-input-set-key (kbd "s-<f2>")  (lambda () (interactive) (start-process-shell-command "urxvt" nil "urxvt -e htop")))
-       (exwm-input-set-key (kbd "s-a") 'delete-other-windows)
-       (exwm-input-set-key (kbd "s-s") 'split-window-below)
-       (exwm-input-set-key (kbd "s-d") 'split-go-to-right)
-       (exwm-input-set-key (kbd "s-v") 'delete-window)
-       (exwm-input-set-key (kbd "s-6") (lambda () (interactive)(start-process-shell-command "pavucontrol" nil "pavucontrol")))
-       (exwm-input-set-key (kbd "s-L") 'evil-window-move-far-right)
-       (exwm-input-set-key (kbd "s-H") 'evil-window-move-far-left)
-       (exwm-input-set-key (kbd "s-J") 'evil-window-move-very-bottom)
-       (exwm-input-set-key (kbd "s-K") 'evil-window-move-very-top)
-       (exwm-input-set-key (kbd "s-h") 'evil-window-left)
-       (exwm-input-set-key (kbd "s-l") 'evil-window-right)
-       (exwm-input-set-key (kbd "s-k") 'evil-window-up)
-       (exwm-input-set-key (kbd "s-j") 'evil-window-down)
-       (exwm-input-set-key (kbd "s-o") 'other-frame)
-       (exwm-input-set-key (kbd "s-=") 'balance-windows)
-       (exwm-input-set-key (kbd "s-m") (lambda () (interactive)(switch-to-buffer "*scratch*")))
-       (exwm-input-set-key (kbd "s-p") (lambda () (interactive) (start-process-shell-command "rofi" nil "xdg-open \"$(locate pdf ods php | rofi -dmenu)\"")))
-       (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
-       (exwm-input-set-key (kbd "s-w") '+workspace/switch-to)
-       (exwm-input-set-key (kbd "s-0") '+workspace/switch-to-0)
-       (exwm-input-set-key (kbd "s-1") '+workspace/switch-to-1)
-       (exwm-input-set-key (kbd "s-2") '+workspace/switch-to-2)
-       (exwm-input-set-key (kbd "s-3") '+workspace/switch-to-3)
-       (exwm-input-set-key (kbd "s-4") '+workspace/switch-to-4)
-       ;(exwm-input-set-key (kbd "s-f") 'counsel-find-file)
-       (exwm-input-set-key (kbd "s-b") (lambda () (interactive) (start-process-shell-command "Qutebrowser" nil "qutebrowser")))
-       (exwm-input-set-key (kbd "s-t") (lambda () (interactive) (start-process-shell-command "Ranger" nil "urxvt -e ranger")))
-       (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot -u ~/'%Y-%m-%d_$wx$h.png'")))
-       ;(exwm-input-set-key (kbd "s-e") 'dnl-urls)
+  :config
+  (add-hook 'exwm-mode-hook #'doom-mark-buffer-as-real-h)
+  (exwm-input-set-key (kbd "s-<return>") #'dnl-terminal-huge)
+  (exwm-input-set-key (kbd "s-'") #'shell-command)
+  (exwm-input-set-key (kbd "s-g") (lambda () (interactive) (start-process-shell-command "Google" nil (concat browser " --new-window"))))
+  (exwm-input-set-key (kbd "s-G") (lambda () (interactive) (start-process-shell-command "Cacafire" nil "firefox")))
+  (exwm-input-set-key (kbd "s-<SPC>") 'ivy-switch-buffer)
+  (exwm-input-set-key (kbd "s-x") 'counsel-M-x)
+  (exwm-input-set-key (kbd "s-/") 'exwm-layout-toggle-fullscreen)
+  (exwm-input-set-key (kbd "s-,") 'evil-prev-buffer)
+  (exwm-input-set-key (kbd "s-.") 'evil-next-buffer)
+  (exwm-input-set-key (kbd "s-<f2>")  (lambda () (interactive) (start-process-shell-command "urxvt" nil "urxvt -e htop")))
+  (exwm-input-set-key (kbd "s-a") 'delete-other-windows)
+  (exwm-input-set-key (kbd "s-s") 'split-window-below)
+  (exwm-input-set-key (kbd "s-d") 'split-go-to-right)
+  (exwm-input-set-key (kbd "s-v") 'delete-window)
+  (exwm-input-set-key (kbd "s-6") (lambda () (interactive)(start-process-shell-command "pavucontrol" nil "pavucontrol")))
+  (exwm-input-set-key (kbd "s-L") 'evil-window-move-far-right)
+  (exwm-input-set-key (kbd "s-H") 'evil-window-move-far-left)
+  (exwm-input-set-key (kbd "s-J") 'evil-window-move-very-bottom)
+  (exwm-input-set-key (kbd "s-K") 'evil-window-move-very-top)
+  (exwm-input-set-key (kbd "s-h") 'evil-window-left)
+  (exwm-input-set-key (kbd "s-l") 'evil-window-right)
+  (exwm-input-set-key (kbd "s-k") 'evil-window-up)
+  (exwm-input-set-key (kbd "s-j") 'evil-window-down)
+  (exwm-input-set-key (kbd "s-o") 'other-frame)
+  (exwm-input-set-key (kbd "s-=") 'balance-windows)
+  (exwm-input-set-key (kbd "s-m") (lambda () (interactive)(switch-to-buffer "*scratch*")))
+  (exwm-input-set-key (kbd "s-p") (lambda () (interactive) (start-process-shell-command "rofi" nil "xdg-open \"$(locate pdf ods php | rofi -dmenu)\"")))
+  (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
+  (exwm-input-set-key (kbd "s-w") '+workspace/switch-to)
+  (exwm-input-set-key (kbd "s-0") '+workspace/switch-to-0)
+  (exwm-input-set-key (kbd "s-1") '+workspace/switch-to-1)
+  (exwm-input-set-key (kbd "s-2") '+workspace/switch-to-2)
+  (exwm-input-set-key (kbd "s-3") '+workspace/switch-to-3)
+  (exwm-input-set-key (kbd "s-4") '+workspace/switch-to-4)
+                                        ;(exwm-input-set-key (kbd "s-f") 'counsel-find-file)
+  (exwm-input-set-key (kbd "s-b") (lambda () (interactive) (start-process-shell-command "Qutebrowser" nil "qutebrowser")))
+  (exwm-input-set-key (kbd "s-t") (lambda () (interactive) (start-process-shell-command "Ranger" nil "urxvt -e ranger")))
+  (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot -u ~/'%Y-%m-%d_$wx$h.png'")))
+                                        ;(exwm-input-set-key (kbd "s-e") 'dnl-urls)
                                         ;
-       ;; (require 'exwm-randr)
-       ;; (setq exwm-randr-workspace-monitor-plist '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
-       ;;                                  ;(add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
-       ;; (exwm-randr-enable)
+  ;; (require 'exwm-randr)
+  ;; (setq exwm-randr-workspace-monitor-plist '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
+  ;;                                  ;(add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
+  ;; (exwm-randr-enable)
                                         ;
-       ;; Resize windows
-       (exwm-input-set-key (kbd "s-u") 'enlarge-window-horizontally)
-       (exwm-input-set-key (kbd "s-i") 'enlarge-window)
-       (exwm-input-set-key (kbd "s-;") 'dnl-run)
-       ;(exwm-input-set-key (kbd "s-y") 'helm-show-kill-ring)
-       ;(exwm-input-set-key (kbd "s-<delete>") (lambda () (interactive) (start-process-shell-command "xr" nil "/home/daniel/bin/xr")))
-       ;(exwm-input-set-key (kbd "s-<home>") 'exwm-floating-toggle-floating)
+  ;; Resize windows
+  (exwm-input-set-key (kbd "s-u") 'enlarge-window-horizontally)
+  (exwm-input-set-key (kbd "s-i") 'enlarge-window)
+  (exwm-input-set-key (kbd "s-;") 'dnl-run)
+                                        ;(exwm-input-set-key (kbd "s-y") 'helm-show-kill-ring)
+                                        ;(exwm-input-set-key (kbd "s-<delete>") (lambda () (interactive) (start-process-shell-command "xr" nil "/home/daniel/bin/xr")))
+                                        ;(exwm-input-set-key (kbd "s-<home>") 'exwm-floating-toggle-floating)
 
        ;;; XF86 Controls
-       (exwm-input-set-key (kbd "s-<f11>") (lambda () (interactive) (start-process-shell-command "backlight" nil "xbacklight -dec 10") (message "Backlight down")))
-       (exwm-input-set-key (kbd "s-<f12>")   (lambda () (interactive) (start-process-shell-command "backlight" nil "xbacklight -inc 10") (message "Backlight up")))
-       (exwm-input-set-key (kbd "s-<prior>")  (lambda () (interactive) (start-process-shell-command "volumeup" nil "pactl set-sink-volume 0 +5%") (message "Volume Up")))
-       (exwm-input-set-key (kbd "s-<next>")  (lambda () (interactive) (start-process-shell-command "volumedown" nil "pactl set-sink-volume 0 -5%") (message "Volume Down")))
-       ;(exwm-input-set-key (kbd "s-]") (lambda () (interactive) (shell-command "rofi -modi \"clipboard:greenclip print\" -show" "*Messages*")))
-       ;(exwm-input-set-key (kbd "s-\\") (lambda () (interactive)(start-process-shell-command "tex" nil "~/bin/texpander.sh")))
+  (exwm-input-set-key (kbd "s-<f11>")   (lambda () (interactive) (start-process-shell-command "backlight" nil "xbacklight -dec 10") (message "Backlight down")))
+  (exwm-input-set-key (kbd "s-<f12>")   (lambda () (interactive) (start-process-shell-command "backlight" nil "xbacklight -inc 10") (message "Backlight up")))
+  (exwm-input-set-key (kbd "s-<prior>")  (lambda () (interactive) (start-process-shell-command "volumeup" nil "pactl set-sink-volume 0 +5%") (message "Volume Up")))
+  (exwm-input-set-key (kbd "s-<next>")   (lambda () (interactive) (start-process-shell-command "volumedown" nil "pactl set-sink-volume 0 -5%") (message "Volume Down")))
+                                        ;(exwm-input-set-key (kbd "s-]") (lambda () (interactive) (shell-command "rofi -modi \"clipboard:greenclip print\" -show" "*Messages*")))
+                                        ;(exwm-input-set-key (kbd "s-\\") (lambda () (interactive)(start-process-shell-command "tex" nil "~/bin/texpander.sh")))
 
-       (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
-       (exwm-input-set-key (kbd "s-S") 'dnl-ssh)
+  (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
+  (exwm-input-set-key (kbd "s-S") 'dnl-ssh)
 ;;; Add these hooks in a suitable place (e.g., as done in exwm-config-default)
-       (add-hook 'exwm-update-class-hook 'exwm-rename-buffer)
-       (add-hook 'exwm-update-title-hook 'exwm-rename-buffer)
+  (add-hook 'exwm-update-class-hook 'exwm-rename-buffer)
+  (add-hook 'exwm-update-title-hook 'exwm-rename-buffer)
 
-       (add-hook 'exwm-mode-hook (lambda ()
-                                   (setq mode-line-format nil)))
+  (add-hook 'exwm-mode-hook (lambda ()
+                              (setq mode-line-format nil)))
 
-       (require 'exwm-systemtray)
-       (exwm-systemtray-enable)
+  (require 'exwm-systemtray)
+  (exwm-systemtray-enable)
 
-       ;; (start-process-shell-command "compton" nil "compton")
-       ;; (start-process-shell-command "nm-applet" nil "nm-applet")
-       ;; (start-process-shell-command "keys" nil "/home/daniel/bin/keys")
-       ;; (start-process-shell-command "greenclip daemon" nil "greenclip daemon")
-       ;; (start-process-shell-command "udiskie" nil "udiskie --tray")
-       ;; (start-process-shell-command "blueman" nil "blueman-applet")
-       ;; (start-process-shell-command "cbatticon" nil "cbatticon")
-       ;; (start-process-shell-command "pasystray" nil "pasystray")
-       ;; (start-process-shell-command "redshift" nil "redshift")
+  ;; (start-process-shell-command "compton" nil "compton")
+  ;; (start-process-shell-command "nm-applet" nil "nm-applet")
+  ;; (start-process-shell-command "keys" nil "/home/daniel/bin/keys")
+  ;; (start-process-shell-command "greenclip daemon" nil "greenclip daemon")
+  ;; (start-process-shell-command "udiskie" nil "udiskie --tray")
+  ;; (start-process-shell-command "blueman" nil "blueman-applet")
+  ;; (start-process-shell-command "cbatticon" nil "cbatticon")
+  ;; (start-process-shell-command "pasystray" nil "pasystray")
+  ;; (start-process-shell-command "redshift" nil "redshift")
 
-       ;(call-process-shell-command "(sleep 10s && ~/.dropbox-dist/dropboxd) &" nil 0)
-       ;(call-process-shell-command "(sleep 5s && dunst) &" nil 0)
+                                        ;(call-process-shell-command "(sleep 10s && ~/.dropbox-dist/dropboxd) &" nil 0)
+                                        ;(call-process-shell-command "(sleep 5s && dunst) &" nil 0)
 
-       ;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
-
-       (exwm-enable))
-
-;; Other
-(set-popup-rule! "^\\*EXWM*" :ignore t)
+                                        ;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
+  (add-to-list 'default-frame-alist '(alpha 85))
+  (exwm-enable))
 
 (load! "dnl-functions")
 
 (start-process-shell-command "compton" nil "compton")
 
-(use-package lsp-mode
+(use-package! lsp-ui
   :config
-  (setq lsp-prefer-flymake nil
-	lsp-enable-file-watchers nil)
-  :commands lsp)
-
-(use-package lsp-ui
-  :requires lsp-mode flycheck
-  :config
+  (message "Does this shit work?")
   (setq lsp-ui-doc-enable t
-	lsp-ui-doc-use-childframe nil
-	lsp-ui-doc-position 'right
-	lsp-ui-doc-include-signature nil
-	lsp-ui-sideline-enable t
-	lsp-ui-flycheck-enable t
-	lsp-ui-flycheck-list-position 'right
-	lsp-ui-flycheck-live-reporting t
-	lsp-ui-peek-enable t
-	lsp-ui-peek-list-width 60
-	lsp-ui-peek-peek-height 25
-	lsp-enable-file-watchers nil
-  lsp-ui-sideline-delay .8
-	lsp-ui-sideline-enable t))
+        lsp-ui-doc-use-childframe nil
+        lsp-ui-doc-position 'right
+        lsp-ui-doc-include-signature nil
+        lsp-ui-sideline-enable t
+        lsp-ui-flycheck-enable t
+        lsp-ui-flycheck-list-position 'right
+        lsp-ui-flycheck-live-reporting t
+        lsp-ui-peek-enable t
+        lsp-ui-peek-list-width 60
+        lsp-ui-peek-peek-height 25
+        lsp-enable-file-watchers nil
+        lsp-ui-sideline-delay .8
+        lsp-ui-sideline-enable t))
 
-(use-package company-lsp :commands company-lsp)
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package! company-lsp  :commands company-lsp)
+(use-package! lsp-treemacs :commands lsp-treemacs-errors-list)
+
