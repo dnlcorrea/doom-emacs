@@ -44,3 +44,4 @@
 
 (package! exwm)
 (package! company-lsp)
+(package! centaur-tabs)

@@ -19,13 +19,14 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; test
-(setq doom-font (font-spec :family "Source Code Pro" :size 14)
+(setq doom-font (font-spec :family "Source Code Pro" :size 16)
       doom-variable-pitch-font (font-spec :family "sans"))
+
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. These are the defaults.
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-moonlight)
 
 ;; If you intend to use org, it is recommended you change this!
 (setq org-directory "~/org/")
@@ -78,7 +79,7 @@
   (exwm-input-set-key (kbd "s-j") 'evil-window-down)
   (exwm-input-set-key (kbd "s-o") 'other-frame)
   (exwm-input-set-key (kbd "s-=") 'balance-windows)
-  (exwm-input-set-key (kbd "s-m") (lambda () (interactive)(switch-to-buffer "*scratch*")))
+  (exwm-input-set-key (kbd "s-m") 'doom/switch-to-scratch-buffer)
   (exwm-input-set-key (kbd "s-p") (lambda () (interactive) (start-process-shell-command "rofi" nil "xdg-open \"$(locate pdf ods php | rofi -dmenu)\"")))
   (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
   (exwm-input-set-key (kbd "s-w") '+workspace/switch-to)
@@ -87,7 +88,7 @@
   (exwm-input-set-key (kbd "s-2") '+workspace/switch-to-2)
   (exwm-input-set-key (kbd "s-3") '+workspace/switch-to-3)
   (exwm-input-set-key (kbd "s-4") '+workspace/switch-to-4)
-                                        ;(exwm-input-set-key (kbd "s-f") 'counsel-find-file)
+                                      ;(exwm-input-set-key (kbd "s-f") 'counsel-find-file)
   (exwm-input-set-key (kbd "s-b") (lambda () (interactive) (start-process-shell-command "Qutebrowser" nil "qutebrowser")))
   (exwm-input-set-key (kbd "s-t") (lambda () (interactive) (start-process-shell-command "Ranger" nil "urxvt -e ranger")))
   (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot -u ~/'%Y-%m-%d_$wx$h.png'")))
@@ -105,8 +106,9 @@
                                         ;(exwm-input-set-key (kbd "s-y") 'helm-show-kill-ring)
                                         ;(exwm-input-set-key (kbd "s-<delete>") (lambda () (interactive) (start-process-shell-command "xr" nil "/home/daniel/bin/xr")))
                                         ;(exwm-input-set-key (kbd "s-<home>") 'exwm-floating-toggle-floating)
+  (exwm-input-set-key (kbd "s-<f5>") (lambda () (interactive) (find-file "~/.doom.d/config.el")))
 
-       ;;; XF86 Controls
+  ;;; XF86 Controls
   (exwm-input-set-key (kbd "s-<f11>")   (lambda () (interactive) (start-process-shell-command "backlight" nil "xbacklight -dec 10") (message "Backlight down")))
   (exwm-input-set-key (kbd "s-<f12>")   (lambda () (interactive) (start-process-shell-command "backlight" nil "xbacklight -inc 10") (message "Backlight up")))
   (exwm-input-set-key (kbd "s-<prior>")  (lambda () (interactive) (start-process-shell-command "volumeup" nil "pactl set-sink-volume 0 +5%") (message "Volume Up")))
@@ -126,30 +128,27 @@
   (require 'exwm-systemtray)
   (exwm-systemtray-enable)
 
-  ;; (start-process-shell-command "compton" nil "compton")
-  ;; (start-process-shell-command "nm-applet" nil "nm-applet")
-  ;; (start-process-shell-command "keys" nil "/home/daniel/bin/keys")
-  ;; (start-process-shell-command "greenclip daemon" nil "greenclip daemon")
-  ;; (start-process-shell-command "udiskie" nil "udiskie --tray")
-  ;; (start-process-shell-command "blueman" nil "blueman-applet")
-  ;; (start-process-shell-command "cbatticon" nil "cbatticon")
-  ;; (start-process-shell-command "pasystray" nil "pasystray")
-  ;; (start-process-shell-command "redshift" nil "redshift")
+  (start-process-shell-command "compton" nil "compton")
+  (start-process-shell-command "nm-applet" nil "nm-applet")
+  (start-process-shell-command "keys" nil "/home/daniel/bin/keys")
+  (start-process-shell-command "greenclip daemon" nil "greenclip daemon")
+  (start-process-shell-command "udiskie" nil "udiskie --tray")
+  (start-process-shell-command "blueman" nil "blueman-applet")
+  (start-process-shell-command "cbatticon" nil "cbatticon")
+  (start-process-shell-command "pasystray" nil "pasystray")
+  (start-process-shell-command "redshift" nil "redshift")
 
-                                        ;(call-process-shell-command "(sleep 10s && ~/.dropbox-dist/dropboxd) &" nil 0)
-                                        ;(call-process-shell-command "(sleep 5s && dunst) &" nil 0)
+  (call-process-shell-command "(sleep 10s && ~/.dropbox-dist/dropboxd) &" nil 0)
+  (call-process-shell-command "(sleep 5s && dunst) &" nil 0)
+  ;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
 
-                                        ;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
-  (add-to-list 'default-frame-alist '(alpha 85))
+  (add-to-list 'default-frame-alist '(alpha 95))
   (exwm-enable))
 
 (load! "dnl-functions")
 
-(start-process-shell-command "compton" nil "compton")
-
 (use-package! lsp-ui
   :config
-  (message "Does this shit work?")
   (setq lsp-ui-doc-enable t
         lsp-ui-doc-use-childframe nil
         lsp-ui-doc-position 'right
@@ -168,3 +167,17 @@
 (use-package! company-lsp  :commands company-lsp)
 (use-package! lsp-treemacs :commands lsp-treemacs-errors-list)
 
+(use-package! centaur-tabs
+  :config
+  (setq centaur-tabs-style "slant"
+        centaur-tabs-set-icons t)
+  (centaur-tabs-mode t)
+  :bind
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward))
+
+;;; MAPS
+;(map! :leader :desc "Capture Inbox" "I" #'jiayuan/org-capture-inbox)
+(map! :leader :desc "Personal Wiki" "d f" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
+(map! :leader :desc "Tech Folder" "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
+(map! :leader :desc "Goals" "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
