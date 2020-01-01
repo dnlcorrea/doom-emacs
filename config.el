@@ -178,3 +178,7 @@
 
 (map! :leader :desc "Next Tab" "l j" 'centaur-tabs-forward)
 (map! :leader :desc "Previous Tab" "l k" 'centaur-tabs-backward)
+
+
+(map! :desc "Emmet, activate!" "M-e" 'emmet-expand-line)
+(map! :leader :desc "Emmet, activate!" "c a" 'emmet-preview-mode)
