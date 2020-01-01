@@ -157,7 +157,6 @@
         lsp-ui-flycheck-enable t
         lsp-ui-flycheck-list-position 'right
         lsp-ui-flycheck-live-reporting t
-        lsp-ui-peek-enable t
         lsp-ui-peek-list-width 60
         lsp-ui-peek-peek-height 25
         lsp-enable-file-watchers nil
@@ -167,17 +166,15 @@
 (use-package! company-lsp  :commands company-lsp)
 (use-package! lsp-treemacs :commands lsp-treemacs-errors-list)
 
-(use-package! centaur-tabs
-  :config
-  (setq centaur-tabs-style "slant"
-        centaur-tabs-set-icons t)
-  (centaur-tabs-mode t)
-  :bind
-  ("C-<prior>" . centaur-tabs-backward)
-  ("C-<next>" . centaur-tabs-forward))
+(use-package! lsp-mode
+  :hook (web-mode . lsp)
+  :commands lsp)
 
 ;;; MAPS
 ;(map! :leader :desc "Capture Inbox" "I" #'jiayuan/org-capture-inbox)
 (map! :leader :desc "Personal Wiki" "d f" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
 (map! :leader :desc "Tech Folder" "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
 (map! :leader :desc "Goals" "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
+
+(map! :leader :desc "Next Tab" "l j" 'centaur-tabs-forward)
+(map! :leader :desc "Previous Tab" "l k" 'centaur-tabs-backward)
