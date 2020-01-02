@@ -53,17 +53,29 @@
 ;; they are implemented.
 (use-package exwm
   :config
-  (add-hook 'exwm-mode-hook #'doom-mark-buffer-as-real-h)
+
+  (add-hook 'exwm-mode-hook #'doom-mark-buffer-as-real-h) ; Treats EXWM as real buffers
+
   (exwm-input-set-key (kbd "s-<return>") #'dnl-terminal-huge)
   (exwm-input-set-key (kbd "s-'") #'shell-command)
+
+  ; Browsers
   (exwm-input-set-key (kbd "s-g") (lambda () (interactive) (start-process-shell-command "Google" nil (concat browser " --new-window"))))
   (exwm-input-set-key (kbd "s-G") (lambda () (interactive) (start-process-shell-command "Cacafire" nil "firefox")))
+
+  ; Navigation
   (exwm-input-set-key (kbd "s-<SPC>") 'ivy-switch-buffer)
   (exwm-input-set-key (kbd "s-x") 'counsel-M-x)
   (exwm-input-set-key (kbd "s-/") 'exwm-layout-toggle-fullscreen)
   (exwm-input-set-key (kbd "s-,") 'evil-prev-buffer)
   (exwm-input-set-key (kbd "s-.") 'evil-next-buffer)
+
   (exwm-input-set-key (kbd "s-<f2>")  (lambda () (interactive) (start-process-shell-command "urxvt" nil "urxvt -e htop")))
+
+  (exwm-input-set-key (kbd "M-SPC") 'dnl-search)
+
+  (exwm-input-set-key (kbd "s-e") 'dnl-urls)
+
   (exwm-input-set-key (kbd "s-a") 'delete-other-windows)
   (exwm-input-set-key (kbd "s-s") 'split-window-below)
   (exwm-input-set-key (kbd "s-d") 'split-go-to-right)
@@ -80,31 +92,36 @@
   (exwm-input-set-key (kbd "s-o") 'other-frame)
   (exwm-input-set-key (kbd "s-=") 'balance-windows)
   (exwm-input-set-key (kbd "s-m") 'doom/switch-to-scratch-buffer)
-  (exwm-input-set-key (kbd "s-p") (lambda () (interactive) (start-process-shell-command "rofi" nil "xdg-open \"$(locate pdf ods php | rofi -dmenu)\"")))
   (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
-  (exwm-input-set-key (kbd "s-w") '+workspace/switch-to)
-  (exwm-input-set-key (kbd "s-0") '+workspace/switch-to-0)
-  (exwm-input-set-key (kbd "s-1") '+workspace/switch-to-1)
-  (exwm-input-set-key (kbd "s-2") '+workspace/switch-to-2)
-  (exwm-input-set-key (kbd "s-3") '+workspace/switch-to-3)
-  (exwm-input-set-key (kbd "s-4") '+workspace/switch-to-4)
-                                      ;(exwm-input-set-key (kbd "s-f") 'counsel-find-file)
+
+  ; Workspaces
+  (exwm-input-set-key (kbd "s-w") 'exwm-workspace-switch)
+  (exwm-input-set-key (kbd "s-0") (lambda () (interactive)(exwm-workspace-switch-create 0)))
+  (exwm-input-set-key (kbd "s-1") (lambda () (interactive)(exwm-workspace-switch-create 1)))
+  (exwm-input-set-key (kbd "s-2") (lambda () (interactive)(exwm-workspace-switch-create 2)))
+  (exwm-input-set-key (kbd "s-3") (lambda () (interactive)(exwm-workspace-switch-create 3)))
+  (exwm-input-set-key (kbd "s-4") (lambda () (interactive)(exwm-workspace-switch-create 4)))
+  (exwm-input-set-key (kbd "s-5") (lambda () (interactive)(exwm-workspace-switch-create 5)))
+
   (exwm-input-set-key (kbd "s-b") (lambda () (interactive) (start-process-shell-command "Qutebrowser" nil "qutebrowser")))
-  (exwm-input-set-key (kbd "s-t") (lambda () (interactive) (start-process-shell-command "Ranger" nil "urxvt -e ranger")))
+  (exwm-input-set-key (kbd "s-r") (lambda () (interactive) (start-process-shell-command "Ranger" nil "urxvt -e ranger")))
   (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot -u ~/'%Y-%m-%d_$wx$h.png'")))
-                                        ;(exwm-input-set-key (kbd "s-e") 'dnl-urls)
-                                        ;
-  ;; (require 'exwm-randr)
-  ;; (setq exwm-randr-workspace-monitor-plist '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
-  ;;                                  ;(add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
-  ;; (exwm-randr-enable)
-                                        ;
+  ;(exwm-input-set-key (kbd "s-e") 'dnl-urls)
+
+  (require 'exwm-randr)
+  (setq exwm-randr-workspace-monitor-plist '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
+  (add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
+  (exwm-randr-enable)
+
   ;; Resize windows
   (exwm-input-set-key (kbd "s-u") 'enlarge-window-horizontally)
   (exwm-input-set-key (kbd "s-i") 'enlarge-window)
-  (exwm-input-set-key (kbd "s-;") 'dnl-run)
+  (exwm-input-set-key (kbd "s-;")
+                      (lambda() (interactive)
+                        (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
+
                                         ;(exwm-input-set-key (kbd "s-y") 'helm-show-kill-ring)
-                                        ;(exwm-input-set-key (kbd "s-<delete>") (lambda () (interactive) (start-process-shell-command "xr" nil "/home/daniel/bin/xr")))
+  (exwm-input-set-key (kbd "s-<delete>") (lambda () (interactive) (start-process-shell-command "xr" nil "/home/daniel/bin/xr")))
                                         ;(exwm-input-set-key (kbd "s-<home>") 'exwm-floating-toggle-floating)
   (exwm-input-set-key (kbd "s-<f5>") (lambda () (interactive) (find-file "~/.doom.d/config.el")))
 
@@ -118,7 +135,6 @@
 
   (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
   (exwm-input-set-key (kbd "s-S") 'dnl-ssh)
-;;; Add these hooks in a suitable place (e.g., as done in exwm-config-default)
   (add-hook 'exwm-update-class-hook 'exwm-rename-buffer)
   (add-hook 'exwm-update-title-hook 'exwm-rename-buffer)
 
@@ -175,10 +191,9 @@
 (map! :leader :desc "Personal Wiki" "d f" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
 (map! :leader :desc "Tech Folder" "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
 (map! :leader :desc "Goals" "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
-
-(map! :leader :desc "Next Tab" "l j" 'centaur-tabs-forward)
-(map! :leader :desc "Previous Tab" "l k" 'centaur-tabs-backward)
-
+(map! :leader :desc "Goals" "d e" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
 
 (map! :desc "Emmet, activate!" "M-e" 'emmet-expand-line)
 (map! :leader :desc "Emmet, activate!" "c a" 'emmet-preview-mode)
+
+(map! :leader :desc "M-x" "x" 'counsel-M-x)
