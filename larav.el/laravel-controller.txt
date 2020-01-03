@@ -1,0 +1,11 @@
+New Controller Class
+
+Options:
+i		Generate a single method, invokable controller class.
+m		Generate a resource controller for the given model.
+p		Generate a nested resource controller class.
+r		Generate a resource controller class.
+a		Exclude the create and edit methods from the controller.
+f		Create the class even if the controller already exists
+
+RET	Get name and get it done...
