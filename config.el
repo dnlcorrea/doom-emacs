@@ -197,3 +197,5 @@
 (map! :leader :desc "Emmet, activate!" "c a" 'emmet-preview-mode)
 
 (map! :leader :desc "M-x" "x" 'counsel-M-x)
+
+(map! :leader :desc "laravel mode" "d l" 'laravel-menu)
