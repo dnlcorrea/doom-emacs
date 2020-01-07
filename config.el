@@ -108,8 +108,7 @@
   (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot -u ~/'%Y-%m-%d_$wx$h.png'")))
   ;(exwm-input-set-key (kbd "s-e") 'dnl-urls)
 
-  (setq exwm-workspace-show-all-buffers t)
-
+  (setq exwm-workspace-show-all-buffers 1)
 
   (require 'exwm-randr)
   (setq exwm-randr-workspace-monitor-plist '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
@@ -205,3 +204,6 @@
 (map! :leader :desc "M-x" "x" 'counsel-M-x)
 
 (map! :leader :desc "laravel mode" "d l" 'laravel-menu)
+
+(map! :leader :desc "Projectile" "." '+ivy/projectile-find-file)
+(map! :leader :desc "Mini" "SPC" '+ivy/switch-buffer)
