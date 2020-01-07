@@ -108,6 +108,9 @@
   (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot -u ~/'%Y-%m-%d_$wx$h.png'")))
   ;(exwm-input-set-key (kbd "s-e") 'dnl-urls)
 
+  (setq exwm-workspace-show-all-buffers t)
+
+
   (require 'exwm-randr)
   (setq exwm-randr-workspace-monitor-plist '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
   ;(add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
@@ -185,6 +188,9 @@
 (use-package! lsp-mode
   :hook (web-mode . lsp)
   :commands lsp)
+
+(use-package! ledger-mode
+  :bind ("C-TAB" . ledger-post-align-xact))
 
 ;;; MAPS
 ;(map! :leader :desc "Capture Inbox" "I" #'jiayuan/org-capture-inbox)
