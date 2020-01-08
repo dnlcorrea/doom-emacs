@@ -1,16 +1,27 @@
 (setq browser "google-chrome-stable")
 (setq ssh_config "~/.ssh/config")
 
-(setq urls '(( "WhatsApp" . "web.whatsapp.com")))
+(setq urls `(
+             ("WhatsApp" . "web.whatsapp.com")
+             ("Telegram" . "web.telegram.org")
+             ("Inter" . "contadigitalpro.bancointer.com.br")
+             ("Meditative Mind" . "youtube.com/channel/UCM0YvsRfYfsniGAhjvYFOSA")
+             ("Drive" . "drive.google.com/drive/u/1/")
+             ("Mail 31" . "mail.google.com/mail/u/1/#inbox")
+             ("Moosti" . "moosti.com")))
 
 (defun dnl-terminal()
   (interactive)
   (mapc (lambda (foo)
           (if (string-match-p "URxvt" (format "%s" foo))
-              (switch-to-buffer foo)
-            (message "No URxvt buffers foud")
-            ))
+              (switch-to-buffer
+               (catch 'tag
+                 (mapc
+                  (lambda (foo)
+                    (when (string-match (regexp-quote "URxvt") (format "%s" foo)) (throw 'tag foo))) (buffer-list))))
+            (dnl-terminal-huge nil)))
         (buffer-list)))
+
 
 ;; (defun dnl-floating-term()
 ;;   (interactive)
@@ -22,7 +33,7 @@
   "Open a Urxvt terminal.  With argument as A, open with huge font."
   (interactive "P")
   (if a (setq comm "urxvt -fn 'xft:Iosevka Term:size=32'") (setq comm "urxvt"))
-  (start-process-shell-command "URxvt" nil (concat comm " -cd ~")))
+  (start-process-shell-command "URxvt" nil comm))
 
 (defun dnl-white-terminal()
   (interactive)
@@ -84,11 +95,70 @@
 (defun dnl-ssh()
   "Ssh's into your ssh servers."
   (interactive)
-  (let
-      ((host
-        (nth 1
-             (split-string
-              (ivy-read "SSH Host: " (dnl--get-ssh-hosts))
-              " " t))))
+  (start-process-shell-command
+   "SSH" nil
+   (format
+    "urxvt -e ssh %s"
+    (nth 1
+         (split-string
+          (ivy-read "SSH Host: " (dnl--get-ssh-hosts)) " " t)))))
 
-    (start-process-shell-command "SSH" nil (format "urxvt -e ssh %s" host))))
+(defun dnl-rain()
+  (interactive)
+  (message "Raining...")
+  (start-process-shell-command "rain" nil "cvlc ~/meditation/0.m4a"))
+
+(defun dnl-semicolon (p)
+  (interactive "P")
+  (when (not (string-match-p ";$" (thing-at-point 'line t)))
+    (end-of-line)
+    (insert ";"))
+  (when p (newline-and-indent)))
+
+(global-set-key (kbd "C-;") 'dnl-semicolon)
+
+;; Utils
+
+(global-set-key
+ (kbd "C-,")
+ (lambda ()
+   (interactive)
+   (end-of-line)
+   (insert ",")))
+
+
+;; (start-process-shell-command
+;;  "volumeup" nil
+;;  "pactl set-sink-volume 0 +5%") (message "Volume Up")))
+
+(defun dnl--command(@com)
+  (start-process-shell-command "whatevs" nil @com))
+
+(defun dnl-volume-up()
+  (interactive)
+  (dnl--volume t))
+
+(defun dnl-volume-down()
+  (interactive)
+  (dnl--volume))
+
+(defun dnl--volume(&optional p)
+  (setq pactl "pactl set-sink-volume 0 %s")
+  (dnl--command (format pactl (if p "+15%" "-15%")))
+  (message "Volume %s" (if p "+15%" "-15%"))
+  (dnl--command "cvlc ~/Dropbox/vol.mp3"))
+
+
+(defun dnl-backlight-up(p)
+  "Increases backlight by ARG amount."
+  (interactive "p")
+  (dnl--command
+   (format "xbacklight -inc %s" (* p 10)))
+  (message "Backlight up"))
+
+(defun dnl-backlight-down(p)
+  "Decreases backlight by ARG amount."
+  (interactive "p")
+  (dnl--command
+   (format "xbacklight -dec %s" (* p 10)))
+  (message "Backlight down"))

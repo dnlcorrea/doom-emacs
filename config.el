@@ -22,19 +22,9 @@
 (setq doom-font (font-spec :family "Source Code Pro" :size 16)
       doom-variable-pitch-font (font-spec :family "sans"))
 
-
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. These are the defaults.
-(setq doom-theme 'doom-moonlight)
-
-;; If you intend to use org, it is recommended you change this!
 (setq org-directory "~/org/")
 
-;; If you want to change the style of line numbers, change this to `relative' or
-;; `nil' to disable it:
 (setq display-line-numbers-type t)
-
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -94,7 +84,12 @@
   (exwm-input-set-key (kbd "s-m") 'doom/switch-to-scratch-buffer)
   (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
 
+  (setq exwm-workspace-number 6
+        exwm-manage-configurations '((t char-mode t))
+        exwm-workspace-show-all-buffers nil)
+
   ; Workspaces
+  (exwm-input-set-key (kbd "s-t") 'exwm-workspace-move-window)
   (exwm-input-set-key (kbd "s-w") 'exwm-workspace-switch)
   (exwm-input-set-key (kbd "s-0") (lambda () (interactive)(exwm-workspace-switch-create 0)))
   (exwm-input-set-key (kbd "s-1") (lambda () (interactive)(exwm-workspace-switch-create 1)))
@@ -107,8 +102,6 @@
   (exwm-input-set-key (kbd "s-r") (lambda () (interactive) (start-process-shell-command "Ranger" nil "urxvt -e ranger")))
   (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot -u ~/'%Y-%m-%d_$wx$h.png'")))
   ;(exwm-input-set-key (kbd "s-e") 'dnl-urls)
-
-  (setq exwm-workspace-show-all-buffers 1)
 
   (require 'exwm-randr)
   (setq exwm-randr-workspace-monitor-plist '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
@@ -123,25 +116,28 @@
                         (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
 
                                         ;(exwm-input-set-key (kbd "s-y") 'helm-show-kill-ring)
-  (exwm-input-set-key (kbd "s-<delete>") (lambda () (interactive) (start-process-shell-command "xr" nil "/home/daniel/bin/xr")))
+  (exwm-input-set-key (kbd "s-<backspace>") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr")))
                                         ;(exwm-input-set-key (kbd "s-<home>") 'exwm-floating-toggle-floating)
   (exwm-input-set-key (kbd "s-<f5>") (lambda () (interactive) (find-file "~/.doom.d/config.el")))
+  (exwm-input-set-key (kbd "s-<f6>") (lambda () (interactive) (find-file "~/org/main.org")))
+  (exwm-input-set-key (kbd "s-<f9>") 'dnl-rain)
+
+  (exwm-input-set-key (kbd "s-S") 'dnl-ssh)
 
   ;;; XF86 Controls
-  (exwm-input-set-key (kbd "s-<f11>")   (lambda () (interactive) (start-process-shell-command "backlight" nil "xbacklight -dec 10") (message "Backlight down")))
-  (exwm-input-set-key (kbd "s-<f12>")   (lambda () (interactive) (start-process-shell-command "backlight" nil "xbacklight -inc 10") (message "Backlight up")))
-  (exwm-input-set-key (kbd "s-<prior>")  (lambda () (interactive) (start-process-shell-command "volumeup" nil "pactl set-sink-volume 0 +5%") (message "Volume Up")))
-  (exwm-input-set-key (kbd "s-<next>")   (lambda () (interactive) (start-process-shell-command "volumedown" nil "pactl set-sink-volume 0 -5%") (message "Volume Down")))
-                                        ;(exwm-input-set-key (kbd "s-]") (lambda () (interactive) (shell-command "rofi -modi \"clipboard:greenclip print\" -show" "*Messages*")))
-                                        ;(exwm-input-set-key (kbd "s-\\") (lambda () (interactive)(start-process-shell-command "tex" nil "~/bin/texpander.sh")))
+  (exwm-input-set-key (kbd "<XF86MonBrightnessDown>") 'dnl-backlight-down)
+  (exwm-input-set-key (kbd "<XF86MonBrightnessUp>")   'dnl-backlight-up)
+  (exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")  'dnl-volume-up)
+  (exwm-input-set-key (kbd "<XF86AudioLowerVolume>")  'dnl-volume-down)
+
+  ;;(exwm-input-set-key (kbd "s-]") (lambda () (interactive) (shell-command "rofi -modi \"clipboard:greenclip print\" -show" "*Messages*")))
+  ;;(exwm-input-set-key (kbd "s-\\") (lambda () (interactive)(start-process-shell-command "tex" nil "~/bin/texpander.sh")))
 
   (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
-  (exwm-input-set-key (kbd "s-S") 'dnl-ssh)
   (add-hook 'exwm-update-class-hook 'exwm-rename-buffer)
   (add-hook 'exwm-update-title-hook 'exwm-rename-buffer)
 
-  (add-hook 'exwm-mode-hook (lambda ()
-                              (setq mode-line-format nil)))
+  (add-hook 'exwm-mode-hook (lambda () (setq mode-line-format nil)))
 
   (require 'exwm-systemtray)
   (exwm-systemtray-enable)
@@ -161,7 +157,12 @@
   ;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
 
   (add-to-list 'default-frame-alist '(alpha 95))
-  (exwm-enable))
+  (exwm-enable)
+
+  ;; There are two ways to load a theme. Both assume the theme is installed and
+  ;; available. You can either set `doom-theme' or manually load a theme with the
+  ;; `load-theme' function. These are the defaults.
+  (setq doom-theme 'doom-one))
 
 (load! "dnl-functions")
 
@@ -188,22 +189,18 @@
   :hook (web-mode . lsp)
   :commands lsp)
 
-(use-package! ledger-mode
-  :bind ("C-TAB" . ledger-post-align-xact))
+(use-package! ledger-mode :bind ("C-TAB" . ledger-post-align-xact))
 
 ;;; MAPS
-;(map! :leader :desc "Capture Inbox" "I" #'jiayuan/org-capture-inbox)
 (map! :leader :desc "Personal Wiki" "d f" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
 (map! :leader :desc "Tech Folder" "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
 (map! :leader :desc "Goals" "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
-(map! :leader :desc "Goals" "d e" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
-
-(map! :desc "Emmet, activate!" "M-e" 'emmet-expand-line)
-(map! :leader :desc "Emmet, activate!" "c a" 'emmet-preview-mode)
-
-(map! :leader :desc "M-x" "x" 'counsel-M-x)
-
+(map! :leader :desc "Emacs.org" "d e" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
+(map! :leader :desc "Main" "d m" (lambda() (interactive) (find-file "~/org/main.org")))
 (map! :leader :desc "laravel mode" "d l" 'laravel-menu)
 
-(map! :leader :desc "Projectile" "." '+ivy/projectile-find-file)
-(map! :leader :desc "Mini" "SPC" '+ivy/switch-buffer)
+(map! :desc "Emmet, activate!" "M-e" 'emmet-expand-line)
+(map! :leader :desc "Emmet Preview" "c a" 'emmet-preview-mode)
+
+;; Remaps
+(map! :leader :desc "M-x" "x" 'counsel-M-x)
