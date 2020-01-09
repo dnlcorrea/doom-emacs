@@ -163,8 +163,9 @@
    (format "xbacklight -dec %s" (* p 10)))
   (message "Backlight down"))
 
+
 (defun dnl-invert-boolean ()
-  ;; TODO: Don't change others; if spelled wrong or word is not a boolean, don't
+  ;; TODO: change 1 to 0 etc
   ;; do shit
   "Inverts a boolean at point."
   (interactive)
@@ -173,7 +174,7 @@
         (beginning-of-line)
         (search-forward "true")
         (replace-match "false"))
-      (save-excursion
-        (beginning-of-line)
-        (search-forward "false")
-        (replace-match "true"))))
+    (when (string-match-p "false" (thing-at-point 'word t))
+      (beginning-of-line)
+      (search-forward "false")
+      (replace-match "true"))))

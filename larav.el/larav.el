@@ -5,6 +5,8 @@
 ;;; so you can select them
 
 
+;;; TODO: Is there an artisan file at project root? If not, nag
+
 (defconst laravel-dir (file-name-directory load-file-name))
 
 ;; Major mode
@@ -31,7 +33,10 @@
 (defun laravel-menu()
   "Creates a popup buffer for laravel-mode."
   (interactive)
-  (laravel--buffer "*Laravel*" "laravel-buffer.txt"))
+  (if (file-exists-p (format "%sartisan" (projectile-project-root)))
+   (laravel--buffer "*Laravel*" "laravel-buffer.txt")
+   (message "There's no 'artisan' on %s. So...no." (projectile-project-root))
+   ))
 
 ;; Loads
 (load (expand-file-name "controller.el" laravel-dir))

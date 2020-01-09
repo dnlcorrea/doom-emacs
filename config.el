@@ -165,6 +165,7 @@
   (setq doom-theme 'doom-one))
 
 (load! "dnl-functions")
+(load! "larav.el/larav.el")
 
 (use-package! lsp-ui
   :config
@@ -191,13 +192,14 @@
 
 (use-package! ledger-mode :bind ("C-TAB" . ledger-post-align-xact))
 
-;;; MAPS
+;;; DNL-MODE, MO'FO'
 (map! :leader :desc "Personal Wiki" "d f" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
 (map! :leader :desc "Tech Folder" "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
 (map! :leader :desc "Goals" "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
 (map! :leader :desc "Emacs.org" "d e" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
 (map! :leader :desc "Main" "d m" (lambda() (interactive) (find-file "~/org/main.org")))
 (map! :leader :desc "laravel mode" "d l" 'laravel-menu)
+(map! :leader :desc "Invert Boolean" "d b" 'dnl-invert-boolean)
 
 (map! :desc "Emmet, activate!" "M-e" 'emmet-expand-line)
 (map! :leader :desc "Emmet Preview" "c a" 'emmet-preview-mode)
