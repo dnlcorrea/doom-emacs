@@ -4,8 +4,6 @@
 ;; refresh' after modifying this file!
 
 
-;; These are used for a number of things, particularly for GPG configuration,
-;; some email clients, file templates and snippets.
 (setq user-full-name "Daniel Correa"
       user-mail-address "dnlcorrea@gmail.com")
 
@@ -26,8 +24,6 @@
 
 (setq display-line-numbers-type t)
 
-;; Here are some additional functions/macros that could help you configure Doom:
-;;
 ;; - `load!' for loading external *.el files relative to this one
 ;; - `use-package' for configuring packages
 ;; - `after!' for running code after a package has loaded
@@ -82,11 +78,14 @@
   (exwm-input-set-key (kbd "s-o") 'other-frame)
   (exwm-input-set-key (kbd "s-=") 'balance-windows)
   (exwm-input-set-key (kbd "s-m") 'doom/switch-to-scratch-buffer)
+  (exwm-input-set-key (kbd "s-n") '+ivy/switch-buffer)
   (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
 
   (setq exwm-workspace-number 6
-        exwm-manage-configurations '((t char-mode t))
-        exwm-workspace-show-all-buffers nil)
+        exwm-workspace-show-all-buffers nil
+        fancy-splash-image "~/Dropbox/Self/avatar_500px.jpg"
+        doom-scratch-buffer-major-mode 'emacs-lisp-mode)
+
 
   ; Workspaces
   (exwm-input-set-key (kbd "s-t") 'exwm-workspace-move-window)
@@ -99,24 +98,34 @@
   (exwm-input-set-key (kbd "s-5") (lambda () (interactive)(exwm-workspace-switch-create 5)))
 
   (exwm-input-set-key (kbd "s-b") (lambda () (interactive) (start-process-shell-command "Qutebrowser" nil "qutebrowser")))
-  (exwm-input-set-key (kbd "s-r") (lambda () (interactive) (start-process-shell-command "Ranger" nil "urxvt -e ranger")))
+  (exwm-input-set-key
+   (kbd "s-r")
+   (lambda (a) (interactive "p")
+     (when (= 4 a) (split-go-to-right))
+     (start-process-shell-command "Ranger" nil "urxvt -e ranger")))
+
   (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot -u ~/'%Y-%m-%d_$wx$h.png'")))
-  ;(exwm-input-set-key (kbd "s-e") 'dnl-urls)
 
-  (require 'exwm-randr)
-  (setq exwm-randr-workspace-monitor-plist '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
-  ;(add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
-  (exwm-randr-enable)
+  (define-key exwm-mode-map (kbd "s-8") 'exwm-floating-toggle-floating)
 
-  ;; Resize windows
-  (exwm-input-set-key (kbd "s-u") 'enlarge-window-horizontally)
-  (exwm-input-set-key (kbd "s-i") 'enlarge-window)
-  (exwm-input-set-key (kbd "s-;")
-                      (lambda() (interactive)
-                        (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
+  (setq exwm-input-simulation-keys
+        '(([?\C-b] . [?\C-c])))
+
+          (require 'exwm-randr)
+          (setq exwm-randr-workspace-monitor-plist '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
+                                        ;(add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
+          (exwm-randr-enable)
+
+          ;; Resize windows
+          (exwm-input-set-key (kbd "s-u") 'enlarge-window-horizontally)
+          (exwm-input-set-key (kbd "s-i") 'enlarge-window)
+          (exwm-input-set-key (kbd "s-;")
+                              (lambda() (interactive)
+                                (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
 
                                         ;(exwm-input-set-key (kbd "s-y") 'helm-show-kill-ring)
-  (exwm-input-set-key (kbd "s-<backspace>") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr")))
+  (exwm-input-set-key (kbd "s-<backspace>") 'dnl-clipboard)
+  (exwm-input-set-key (kbd "s-<del>") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr")))
                                         ;(exwm-input-set-key (kbd "s-<home>") 'exwm-floating-toggle-floating)
   (exwm-input-set-key (kbd "s-<f5>") (lambda () (interactive) (find-file "~/.doom.d/config.el")))
   (exwm-input-set-key (kbd "s-<f6>") (lambda () (interactive) (find-file "~/org/main.org")))
@@ -137,6 +146,9 @@
   (add-hook 'exwm-update-class-hook 'exwm-rename-buffer)
   (add-hook 'exwm-update-title-hook 'exwm-rename-buffer)
 
+  ;; GOLD!
+  (exwm-input-set-key (kbd "s-SPC") #'doom/leader)
+
   (add-hook 'exwm-mode-hook (lambda () (setq mode-line-format nil)))
 
   (require 'exwm-systemtray)
@@ -150,13 +162,14 @@
   (start-process-shell-command "blueman" nil "blueman-applet")
   (start-process-shell-command "cbatticon" nil "cbatticon")
   (start-process-shell-command "pasystray" nil "pasystray")
-  (start-process-shell-command "redshift" nil "redshift")
+  (start-process-shell-command "redshift" nil "redshift-gtk")
 
   (call-process-shell-command "(sleep 10s && ~/.dropbox-dist/dropboxd) &" nil 0)
   (call-process-shell-command "(sleep 5s && dunst) &" nil 0)
   ;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
 
   (add-to-list 'default-frame-alist '(alpha 95))
+  (display-time-mode 1)
   (exwm-enable)
 
   ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -165,7 +178,6 @@
   (setq doom-theme 'doom-one))
 
 (load! "dnl-functions")
-(load! "larav.el/larav.el")
 
 (use-package! lsp-ui
   :config
@@ -193,16 +205,19 @@
 (use-package! ledger-mode :bind ("C-TAB" . ledger-post-align-xact))
 
 ;;; DNL-MODE, MO'FO'
+(map! :leader :desc "Emacs.org" "d e" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
+(map! :leader :desc "Goals" "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
+(map! :leader :desc "Invert Boolean" "d b" 'dnl-invert-boolean)
+(map! :leader :desc "Main" "d m" (lambda() (interactive) (find-file "~/org/main.org")))
 (map! :leader :desc "Personal Wiki" "d f" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
 (map! :leader :desc "Tech Folder" "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
-(map! :leader :desc "Goals" "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
-(map! :leader :desc "Emacs.org" "d e" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
-(map! :leader :desc "Main" "d m" (lambda() (interactive) (find-file "~/org/main.org")))
+(map! :leader :desc "VS EV" "d e" (lambda() (interactive) (find-file "~/org/Tech/EV.org")))
 (map! :leader :desc "laravel mode" "d l" 'laravel-menu)
-(map! :leader :desc "Invert Boolean" "d b" 'dnl-invert-boolean)
 
 (map! :desc "Emmet, activate!" "M-e" 'emmet-expand-line)
 (map! :leader :desc "Emmet Preview" "c a" 'emmet-preview-mode)
 
 ;; Remaps
 (map! :leader :desc "M-x" "x" 'counsel-M-x)
+
+(map! :desc "Locate" "C-SPC" 'counsel-locate)

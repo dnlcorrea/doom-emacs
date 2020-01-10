@@ -44,3 +44,5 @@
 
 (package! exwm)
 (package! company-lsp)
+
+(package! larav.el :recipe (:host github :repo "dnlcorrea/larav.el"))

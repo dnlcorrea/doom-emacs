@@ -163,18 +163,38 @@
    (format "xbacklight -dec %s" (* p 10)))
   (message "Backlight down"))
 
+(defun word-or-region-to-lcc ()
+  "Convert word at point (or selected region) to lower camel case."
+  (interactive)
+  (let* ((bounds (if (use-region-p)
+                     (cons (region-beginning) (region-end))
+                   (bounds-of-thing-at-point 'symbol)))
+         (text   (buffer-substring-no-properties (car bounds) (cdr bounds))))
+    (when bounds
+      (delete-region (car bounds) (cdr bounds))
+      (insert (s-lower-camel-case text)))))
 
 (defun dnl-invert-boolean ()
-  ;; TODO: change 1 to 0 etc
-  ;; do shit
-  "Inverts a boolean at point."
+  "Inverts a boolean at point (true, false, 0, 1)."
   (interactive)
-  (if (string-match-p "true" (thing-at-point 'word t))
-      (save-excursion
-        (beginning-of-line)
-        (search-forward "true")
-        (replace-match "false"))
-    (when (string-match-p "false" (thing-at-point 'word t))
-      (beginning-of-line)
-      (search-forward "false")
-      (replace-match "true"))))
+  (let* ((bounds (bounds-of-thing-at-point 'symbol))
+         (text   (buffer-substring-no-properties (car bounds) (cdr bounds)))
+         (str    (cond ((string-match-p "true" text) "false")
+                       ((string-match-p "false" text) "true")
+                       ((string-match-p "1" text) "0")
+                       ((string-match-p "0" text) "1"))))
+    (if str
+        (progn
+          (delete-region (car bounds) (cdr bounds))
+          (insert str))
+      (message "Not a boolean"))))
+
+(defun dnl-clipboard()
+  (interactive)
+  (kill-new
+   (ivy-read
+    "String: "
+    (split-string
+     (shell-command-to-string "greenclip print")
+     "\n")))
+  (message "Put in kill ring."))

@@ -1,4 +1,0 @@
-Creation
-c   Controller
-m   Model
-n   Notification
