@@ -46,7 +46,7 @@
   (exwm-input-set-key (kbd "s-'") #'shell-command)
 
   ; Browsers
-  (exwm-input-set-key (kbd "s-g") (lambda () (interactive) (start-process-shell-command "Google" nil (concat browser " --new-window"))))
+  (exwm-input-set-key (kbd "s-g") (lambda () (interactive) (start-process-shell-command "Google" nil "google-chrome-stable --new-window")))
   (exwm-input-set-key (kbd "s-G") (lambda () (interactive) (start-process-shell-command "Cacafire" nil "firefox")))
 
   ; Navigation
@@ -84,7 +84,9 @@
   (setq exwm-workspace-number 6
         exwm-workspace-show-all-buffers nil
         fancy-splash-image "~/Dropbox/Self/avatar_500px.jpg"
-        doom-scratch-buffer-major-mode 'emacs-lisp-mode)
+        doom-scratch-buffer-major-mode 'emacs-lisp-mode
+        exwm-randr-workspace-monitor-plist
+          '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
 
 
   ; Workspaces
@@ -108,25 +110,22 @@
 
   (define-key exwm-mode-map (kbd "s-8") 'exwm-floating-toggle-floating)
 
-  (setq exwm-input-simulation-keys
-        '(([?\C-b] . [?\C-c])))
+  (require 'exwm-randr)
+  ;;(add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
+  (exwm-randr-enable)
 
-          (require 'exwm-randr)
-          (setq exwm-randr-workspace-monitor-plist '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
-                                        ;(add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
-          (exwm-randr-enable)
+  ;; Resize windows
+  (exwm-input-set-key (kbd "s-u") 'enlarge-window-horizontally)
+  (exwm-input-set-key (kbd "s-i") 'enlarge-window)
+  (exwm-input-set-key
+   (kbd "s-;")
+   (lambda() (interactive)
+     (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
 
-          ;; Resize windows
-          (exwm-input-set-key (kbd "s-u") 'enlarge-window-horizontally)
-          (exwm-input-set-key (kbd "s-i") 'enlarge-window)
-          (exwm-input-set-key (kbd "s-;")
-                              (lambda() (interactive)
-                                (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
-
-                                        ;(exwm-input-set-key (kbd "s-y") 'helm-show-kill-ring)
+  (exwm-input-set-key (kbd "s-y") 'counsel-yank-pop)
   (exwm-input-set-key (kbd "s-<backspace>") 'dnl-clipboard)
-  (exwm-input-set-key (kbd "s-<del>") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr")))
-                                        ;(exwm-input-set-key (kbd "s-<home>") 'exwm-floating-toggle-floating)
+  (exwm-input-set-key (kbd "s-<delete>") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr")))
+  ;;(exwm-input-set-key (kbd "s-<home>") 'exwm-floating-toggle-floating)
   (exwm-input-set-key (kbd "s-<f5>") (lambda () (interactive) (find-file "~/.doom.d/config.el")))
   (exwm-input-set-key (kbd "s-<f6>") (lambda () (interactive) (find-file "~/org/main.org")))
   (exwm-input-set-key (kbd "s-<f9>") 'dnl-rain)
@@ -166,7 +165,7 @@
 
   (call-process-shell-command "(sleep 10s && ~/.dropbox-dist/dropboxd) &" nil 0)
   (call-process-shell-command "(sleep 5s && dunst) &" nil 0)
-  ;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
+                                        ;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
 
   (add-to-list 'default-frame-alist '(alpha 95))
   (display-time-mode 1)
@@ -205,19 +204,27 @@
 (use-package! ledger-mode :bind ("C-TAB" . ledger-post-align-xact))
 
 ;;; DNL-MODE, MO'FO'
-(map! :leader :desc "Emacs.org" "d e" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
-(map! :leader :desc "Goals" "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
+(map! :leader :desc "Emacs.org"      "d e" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
+(map! :leader :desc "Goals"          "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
 (map! :leader :desc "Invert Boolean" "d b" 'dnl-invert-boolean)
-(map! :leader :desc "Main" "d m" (lambda() (interactive) (find-file "~/org/main.org")))
-(map! :leader :desc "Personal Wiki" "d f" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
-(map! :leader :desc "Tech Folder" "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
-(map! :leader :desc "VS EV" "d e" (lambda() (interactive) (find-file "~/org/Tech/EV.org")))
-(map! :leader :desc "laravel mode" "d l" 'laravel-menu)
+(map! :leader :desc "Main"           "d m" (lambda() (interactive) (find-file "~/org/main.org")))
+(map! :leader :desc "Tech Folder"    "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
+(map! :leader :desc "VS EV"          "d e" (lambda() (interactive) (find-file "~/org/Tech/EV.org")))
+(map! :leader :desc "laravel mode"   "d l" 'laravel-menu)
+
+;;; TODO: Date
+(map! :leader :desc "Finance"        "d f"  (lambda() (interactive) (find-file "~/finance/2020/01-Jan.ledger")))
 
 (map! :desc "Emmet, activate!" "M-e" 'emmet-expand-line)
-(map! :leader :desc "Emmet Preview" "c a" 'emmet-preview-mode)
+
+(map! :map web-mode-map
+      :i "C-e" 'emmet-preview-mode
+      :desc "Emmet Preview"
+      :leader "c a" 'emmet-preview-mode)
 
 ;; Remaps
 (map! :leader :desc "M-x" "x" 'counsel-M-x)
 
 (map! :desc "Locate" "C-SPC" 'counsel-locate)
+
+(map! :leader :desc "Kill Ring" "y" 'counsel-yank-pop)

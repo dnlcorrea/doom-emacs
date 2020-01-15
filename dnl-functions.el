@@ -1,10 +1,7 @@
-(setq browser "google-chrome-stable")
-(setq ssh_config "~/.ssh/config")
-
-(setq urls `(
-             ("WhatsApp" . "web.whatsapp.com")
+(setq dnl-browser "/usr/bin/qutebrowser --target window"
+      ssh_config "~/.ssh/config"
+      urls `(("WhatsApp" . "web.whatsapp.com")
              ("Telegram" . "web.telegram.org")
-             ("Inter" . "contadigitalpro.bancointer.com.br")
              ("Meditative Mind" . "youtube.com/channel/UCM0YvsRfYfsniGAhjvYFOSA")
              ("Drive" . "drive.google.com/drive/u/1/")
              ("Mail 31" . "mail.google.com/mail/u/1/#inbox")
@@ -44,7 +41,7 @@
   (interactive)
   (start-process-shell-command
    "Google" nil
-   (format "%s --new-window https://%s" browser
+   (format "%s --new-window https://%s" "google-chrome-stable"
            (assoc-default (ivy-read "URL: " urls) urls))))
 
 
@@ -68,10 +65,16 @@
   (split-go-to-right)
   (start-process-shell-command "messages" nil "google-chrome-stable --new-window https://messages.google.com"))
 
-(defun dnl-search() 
+(defun dnl-search()
+  "Search string in Google."
   (interactive)
-  (setq search (read-string "Search: "))
-  (start-process-shell-command "search" nil (format "%s 'https://google.com/search?q=%s'" "/usr/bin/qutebrowser --target window" search)))
+  (let ((search-string (read-string "Search: ")))
+    (message "Searching [%s]" search-string)
+    (start-process-shell-command
+     "dnl-search" nil
+     (format "%s 'https://google.com/search?q=%s'"
+             dnl-browser
+             search-string))))
 
 
 (defun dnl-insert-date()
@@ -173,6 +176,7 @@
     (when bounds
       (delete-region (car bounds) (cdr bounds))
       (insert (s-lower-camel-case text)))))
+
 
 (defun dnl-invert-boolean ()
   "Inverts a boolean at point (true, false, 0, 1)."
