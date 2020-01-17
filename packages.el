@@ -45,6 +45,7 @@
 (package! exwm)
 (package! company-lsp)
 (package! request)
+(package! lsp-treemacs)
 
 ;; Mein
 (package! larav.el :recipe (:host github :repo "dnlcorrea/larav.el"))
