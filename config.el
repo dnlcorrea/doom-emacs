@@ -82,7 +82,7 @@
   (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
 
   (setq exwm-workspace-number 6
-        exwm-workspace-show-all-buffers nil
+        exwm-workspace-show-all-buffers t
         fancy-splash-image "~/Dropbox/Self/avatar_500px.jpg"
         doom-scratch-buffer-major-mode 'emacs-lisp-mode
         exwm-randr-workspace-monitor-plist
@@ -121,6 +121,11 @@
    (kbd "s-;")
    (lambda() (interactive)
      (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
+
+  ;; (exwm-input-set-key
+  ;;  (kbd "s-ç")
+  ;;  (lambda() (interactive)
+  ;;    (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
 
   (exwm-input-set-key (kbd "s-y") 'counsel-yank-pop)
   (exwm-input-set-key (kbd "s-<backspace>") 'dnl-clipboard)
@@ -161,7 +166,7 @@
   (start-process-shell-command "blueman" nil "blueman-applet")
   (start-process-shell-command "cbatticon" nil "cbatticon")
   (start-process-shell-command "pasystray" nil "pasystray")
-  (start-process-shell-command "redshift" nil "redshift-gtk")
+  ;;(start-process-shell-command "redshift" nil "redshift-gtk")
 
   (call-process-shell-command "(sleep 10s && ~/.dropbox-dist/dropboxd) &" nil 0)
   (call-process-shell-command "(sleep 5s && dunst) &" nil 0)
@@ -177,6 +182,7 @@
   (setq doom-theme 'doom-one))
 
 (load! "dnl-functions")
+(load! "dnl-php")
 
 (use-package! lsp-ui
   :config
@@ -206,11 +212,14 @@
 ;;; DNL-MODE, MO'FO'
 (map! :leader :desc "Emacs.org"      "d e" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
 (map! :leader :desc "Goals"          "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
+(map! :leader :desc "Wiki"           "d w" (lambda() (interactive) (find-file "~/org/Life Wiki.org")))
 (map! :leader :desc "Invert Boolean" "d b" 'dnl-invert-boolean)
 (map! :leader :desc "Main"           "d m" (lambda() (interactive) (find-file "~/org/main.org")))
 (map! :leader :desc "Tech Folder"    "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
 (map! :leader :desc "VS EV"          "d e" (lambda() (interactive) (find-file "~/org/Tech/EV.org")))
 (map! :leader :desc "laravel mode"   "d l" 'laravel-menu)
+
+(map! :leader :desc "Format Code"   "c f" 'lsp-format-buffer)
 
 ;;; TODO: Date
 (map! :leader :desc "Finance"        "d f"  (lambda() (interactive) (find-file "~/finance/2020/01-Jan.ledger")))
@@ -228,3 +237,15 @@
 (map! :desc "Locate" "C-SPC" 'counsel-locate)
 
 (map! :leader :desc "Kill Ring" "y" 'counsel-yank-pop)
+
+(map! :leader :desc "Eval last sexp" "m e j" 'eval-print-last-sexp)
+
+;; YAS
+(map! "C-l" 'yas-expand)
+(map! "C-j" 'yas-next-field)
+
+
+(map! :leader :desc "New Snippet" "a n" 'yas-new-snippet)
+(map! :leader :desc "Edit Snippet" "a e" 'yas-visit-snippet-file)
+
+(map! :leader :desc "Ace Window" "w w" 'ace-window)
