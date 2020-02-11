@@ -81,12 +81,15 @@
   (exwm-input-set-key (kbd "s-n") '+ivy/switch-buffer)
   (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
 
-  (setq exwm-workspace-number 6
+  (setq exwm-manage-configurations '((t char-mode t)))
+
+  (setq exwm-workspace-number 10
         exwm-workspace-show-all-buffers t
         fancy-splash-image "~/Dropbox/Self/avatar_500px.jpg"
         doom-scratch-buffer-major-mode 'emacs-lisp-mode
         exwm-randr-workspace-monitor-plist
-          '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "eDP1" 5 "eDP1"))
+          '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "HDMI1" 5 "HDMI1"
+            6 "eDP1" 7 "eDP1" 8 "eDP1" 9 "eDP1"))
 
 
   ; Workspaces
@@ -98,6 +101,10 @@
   (exwm-input-set-key (kbd "s-3") (lambda () (interactive)(exwm-workspace-switch-create 3)))
   (exwm-input-set-key (kbd "s-4") (lambda () (interactive)(exwm-workspace-switch-create 4)))
   (exwm-input-set-key (kbd "s-5") (lambda () (interactive)(exwm-workspace-switch-create 5)))
+  (exwm-input-set-key (kbd "s-6") (lambda () (interactive)(exwm-workspace-switch-create 6)))
+  (exwm-input-set-key (kbd "s-7") (lambda () (interactive)(exwm-workspace-switch-create 7)))
+  (exwm-input-set-key (kbd "s-8") (lambda () (interactive)(exwm-workspace-switch-create 8)))
+  (exwm-input-set-key (kbd "s-9") (lambda () (interactive)(exwm-workspace-switch-create 9)))
 
   (exwm-input-set-key (kbd "s-b") (lambda () (interactive) (start-process-shell-command "Qutebrowser" nil "qutebrowser")))
   (exwm-input-set-key
@@ -207,6 +214,12 @@
   :hook (web-mode . lsp)
   :commands lsp)
 
+(use-package! evil-numbers
+  :commands 'evil-numbers
+  :init
+  (map! :leader :desc "Increment Number" "+" 'evil-numbers/inc-at-pt)
+  (map! :leader :desc "Decrement Number" "-" 'evil-numbers/dec-at-pt))
+
 (use-package! ledger-mode :bind ("C-TAB" . ledger-post-align-xact))
 
 ;;; DNL-MODE, MO'FO'
@@ -222,7 +235,13 @@
 (map! :leader :desc "Format Code"   "c f" 'lsp-format-buffer)
 
 ;;; TODO: Date
-(map! :leader :desc "Finance"        "d f"  (lambda() (interactive) (find-file "~/finance/2020/01-Jan.ledger")))
+(map! :leader :desc "Finance" "d f"
+      (lambda()
+        (interactive)
+        (find-file (format "~/finance/%s/%s/%s-main.ledger"
+                           (format-time-string "%Y")
+                           (format-time-string "%m-%b")
+                           (format-time-string "%m-%b")))))
 
 (map! :desc "Emmet, activate!" "M-e" 'emmet-expand-line)
 

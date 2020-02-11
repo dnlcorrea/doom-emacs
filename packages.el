@@ -46,6 +46,7 @@
 (package! company-lsp)
 (package! request)
 (package! lsp-treemacs)
+(package! evil-numbers)
 
 ;; Mein
 (package! larav.el :recipe (:host github :repo "dnlcorrea/larav.el"))
