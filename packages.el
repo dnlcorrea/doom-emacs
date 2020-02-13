@@ -45,6 +45,7 @@
 (package! exwm)
 (package! company-lsp)
 (package! request)
+(package! spinner)
 (package! lsp-treemacs)
 (package! evil-numbers)
 

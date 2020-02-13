@@ -202,3 +202,7 @@
      (shell-command-to-string "greenclip print")
      "\n")))
   (message "Put in kill ring."))
+
+(defun dnl-today()
+  (interactive)
+  (insert (format-time-string "%Y/%m/%d")))

@@ -43,14 +43,13 @@
   (add-hook 'exwm-mode-hook #'doom-mark-buffer-as-real-h) ; Treats EXWM as real buffers
 
   (exwm-input-set-key (kbd "s-<return>") #'dnl-terminal-huge)
-  (exwm-input-set-key (kbd "s-'") #'shell-command)
+  ;;(exwm-input-set-key (kbd "s-'") #'shell-command)
 
   ; Browsers
   (exwm-input-set-key (kbd "s-g") (lambda () (interactive) (start-process-shell-command "Google" nil "google-chrome-stable --new-window")))
   (exwm-input-set-key (kbd "s-G") (lambda () (interactive) (start-process-shell-command "Cacafire" nil "firefox")))
 
   ; Navigation
-  (exwm-input-set-key (kbd "s-<SPC>") 'ivy-switch-buffer)
   (exwm-input-set-key (kbd "s-x") 'counsel-M-x)
   (exwm-input-set-key (kbd "s-/") 'exwm-layout-toggle-fullscreen)
   (exwm-input-set-key (kbd "s-,") 'evil-prev-buffer)
@@ -66,7 +65,6 @@
   (exwm-input-set-key (kbd "s-s") 'split-window-below)
   (exwm-input-set-key (kbd "s-d") 'split-go-to-right)
   (exwm-input-set-key (kbd "s-v") 'delete-window)
-  (exwm-input-set-key (kbd "s-6") (lambda () (interactive)(start-process-shell-command "pavucontrol" nil "pavucontrol")))
   (exwm-input-set-key (kbd "s-L") 'evil-window-move-far-right)
   (exwm-input-set-key (kbd "s-H") 'evil-window-move-far-left)
   (exwm-input-set-key (kbd "s-J") 'evil-window-move-very-bottom)
@@ -80,6 +78,8 @@
   (exwm-input-set-key (kbd "s-m") 'doom/switch-to-scratch-buffer)
   (exwm-input-set-key (kbd "s-n") '+ivy/switch-buffer)
   (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
+
+  (exwm-input-set-key (kbd "s-'") (lambda () (interactive)(start-process-shell-command "pavucontrol" nil "pavucontrol")))
 
   (setq exwm-manage-configurations '((t char-mode t)))
 
@@ -113,10 +113,11 @@
      (when (= 4 a) (split-go-to-right))
      (start-process-shell-command "Ranger" nil "urxvt -e ranger")))
 
+  ;;; Screenshots
   (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot -u ~/'%Y-%m-%d_$wx$h.png'")))
+  (exwm-input-set-key (kbd "<s-print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot ~/screenshot.png;gimp ~/screenshot.png")))
 
-  (define-key exwm-mode-map (kbd "s-8") 'exwm-floating-toggle-floating)
-
+  ;;; xrandr
   (require 'exwm-randr)
   ;;(add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
   (exwm-randr-enable)
@@ -129,11 +130,6 @@
    (lambda() (interactive)
      (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
 
-  ;; (exwm-input-set-key
-  ;;  (kbd "s-ç")
-  ;;  (lambda() (interactive)
-  ;;    (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
-
   (exwm-input-set-key (kbd "s-y") 'counsel-yank-pop)
   (exwm-input-set-key (kbd "s-<backspace>") 'dnl-clipboard)
   (exwm-input-set-key (kbd "s-<delete>") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr")))
@@ -141,6 +137,7 @@
   (exwm-input-set-key (kbd "s-<f5>") (lambda () (interactive) (find-file "~/.doom.d/config.el")))
   (exwm-input-set-key (kbd "s-<f6>") (lambda () (interactive) (find-file "~/org/main.org")))
   (exwm-input-set-key (kbd "s-<f9>") 'dnl-rain)
+  (exwm-input-set-key (kbd "s-<f10>") (lambda () (interactive)(start-process-shell-command "timer" nil "urxvt -e termdown 5m2s")))
 
   (exwm-input-set-key (kbd "s-S") 'dnl-ssh)
 
