@@ -114,16 +114,17 @@
      (start-process-shell-command "Ranger" nil "urxvt -e ranger")))
 
   ;;; Screenshots
-  (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot -u ~/'%Y-%m-%d_$wx$h.png'")))
-  (exwm-input-set-key (kbd "<s-print>") (lambda () (interactive) (start-process-shell-command "scrot" nil "scrot ~/screenshot.png;gimp ~/screenshot.png")))
+  (exwm-input-set-key (kbd "<print>") (lambda () (interactive) (start-process-shell-command "deepin" nil "deepin-screenshot")))
 
   ;;; xrandr
   (require 'exwm-randr)
   ;;(add-hook 'exwm-randr-screen-change-hook (lambda () (start-process-shell-command "xrandr" nil "bash ~/bin/xr")))
   (exwm-randr-enable)
 
+  (exwm-input-set-key (kbd "s-u") 'universal-argument)
+
   ;; Resize windows
-  (exwm-input-set-key (kbd "s-u") 'enlarge-window-horizontally)
+  (exwm-input-set-key (kbd "s-p") 'enlarge-window-horizontally)
   (exwm-input-set-key (kbd "s-i") 'enlarge-window)
   (exwm-input-set-key
    (kbd "s-;")
@@ -147,8 +148,7 @@
   (exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")  'dnl-volume-up)
   (exwm-input-set-key (kbd "<XF86AudioLowerVolume>")  'dnl-volume-down)
 
-  ;;(exwm-input-set-key (kbd "s-]") (lambda () (interactive) (shell-command "rofi -modi \"clipboard:greenclip print\" -show" "*Messages*")))
-  ;;(exwm-input-set-key (kbd "s-\\") (lambda () (interactive)(start-process-shell-command "tex" nil "~/bin/texpander.sh")))
+  (exwm-input-set-key (kbd "s-\\") (lambda () (interactive)(start-process-shell-command "tex" nil "~/bin/texpander.sh")))
 
   (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
   (add-hook 'exwm-update-class-hook 'exwm-rename-buffer)
@@ -174,7 +174,7 @@
 
   (call-process-shell-command "(sleep 10s && ~/.dropbox-dist/dropboxd) &" nil 0)
   (call-process-shell-command "(sleep 5s && dunst) &" nil 0)
-                                        ;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
+  ;;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
 
   (add-to-list 'default-frame-alist '(alpha 95))
   (display-time-mode 1)
@@ -183,7 +183,7 @@
   ;; There are two ways to load a theme. Both assume the theme is installed and
   ;; available. You can either set `doom-theme' or manually load a theme with the
   ;; `load-theme' function. These are the defaults.
-  (setq doom-theme 'doom-one))
+  (setq doom-theme 'doom-opera))
 
 (load! "dnl-functions")
 (load! "dnl-php")
@@ -197,7 +197,7 @@
         lsp-ui-sideline-enable t
         lsp-ui-flycheck-enable t
         lsp-ui-flycheck-list-position 'right
-        lsp-ui-flycheck-live-reporting t
+        lsp-flycheck-live-reporting t
         lsp-ui-peek-list-width 60
         lsp-ui-peek-peek-height 25
         lsp-enable-file-watchers nil
