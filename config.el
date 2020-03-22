@@ -37,7 +37,7 @@
 ;;
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
-(use-package exwm
+(use-package! exwm
   :config
 
   (add-hook 'exwm-mode-hook #'doom-mark-buffer-as-real-h) ; Treats EXWM as real buffers
@@ -84,7 +84,7 @@
   (setq exwm-manage-configurations '((t char-mode t)))
 
   (setq exwm-workspace-number 10
-        exwm-workspace-show-all-buffers t
+        exwm-workspace-show-all-buffers nil
         fancy-splash-image "~/Dropbox/Self/avatar_500px.jpg"
         doom-scratch-buffer-major-mode 'emacs-lisp-mode
         exwm-randr-workspace-monitor-plist
@@ -133,7 +133,14 @@
 
   (exwm-input-set-key (kbd "s-y") 'counsel-yank-pop)
   (exwm-input-set-key (kbd "s-<backspace>") 'dnl-clipboard)
-  (exwm-input-set-key (kbd "s-<delete>") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr")))
+
+  ;;; Options for screen resolution
+
+  (exwm-input-set-key (kbd "s-<delete>") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr"))) ; Menu
+  (exwm-input-set-key (kbd "s-C-1") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr -m fodao"))) ; Fodao
+  (exwm-input-set-key (kbd "s-C-2") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr -m tv"))) ; TV
+
+
   ;;(exwm-input-set-key (kbd "s-<home>") 'exwm-floating-toggle-floating)
   (exwm-input-set-key (kbd "s-<f5>") (lambda () (interactive) (find-file "~/.doom.d/config.el")))
   (exwm-input-set-key (kbd "s-<f6>") (lambda () (interactive) (find-file "~/org/main.org")))
@@ -175,6 +182,9 @@
   (call-process-shell-command "(sleep 10s && ~/.dropbox-dist/dropboxd) &" nil 0)
   (call-process-shell-command "(sleep 5s && dunst) &" nil 0)
   ;;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
+  ;;
+
+  (setq lsp-keymap-prefix "c-b")
 
   (add-to-list 'default-frame-alist '(alpha 95))
   (display-time-mode 1)
@@ -204,12 +214,44 @@
         lsp-ui-sideline-delay .8
         lsp-ui-sideline-enable t))
 
-(use-package! company-lsp  :commands company-lsp)
+(use-package! company-lsp
+  :hook (java-mode . company-lsp)
+  :config
+  (push 'company-lsp company-backends))
+
+(use-package! company-box
+  :hook (company . company-box))
+
+(use-package! company
+  :config
+  (setq company-async-timeout 2))
+
 (use-package! lsp-treemacs :commands lsp-treemacs-errors-list)
 
-(use-package! lsp-mode
+(add-hook! 'java #'lsp-java-boot-lens-mode)
+
+(use-package! treemacs
+  :config
+  (setq treemacs-position 'right))
+
+(use-package! lsp
   :hook (web-mode . lsp)
-  :commands lsp)
+  :commands lsp
+  :config
+  (define-key lsp-mode-map (kbd "s-l") nil))
+
+
+(use-package! dap-mode
+  :after lsp
+  :config
+  (dap-mode t)
+  (dap-ui-mode t))
+
+(use-package! lsp-java
+  :after lsp
+  :hook (java-mode . lsp)
+  :init
+  (push 'company-lsp company-backends))
 
 (use-package! evil-numbers
   :commands 'evil-numbers
@@ -219,14 +261,16 @@
 
 (use-package! ledger-mode :bind ("C-TAB" . ledger-post-align-xact))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; DNL-MODE, MO'FO'
-(map! :leader :desc "Emacs.org"      "d e" (lambda() (interactive) (find-file "~/org/Tech/Emacs.org")))
+(map! :leader :desc "Emmet PHP"      "d e" 'dnl-php-emmet)
 (map! :leader :desc "Goals"          "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
 (map! :leader :desc "Wiki"           "d w" (lambda() (interactive) (find-file "~/org/Life Wiki.org")))
 (map! :leader :desc "Invert Boolean" "d b" 'dnl-invert-boolean)
 (map! :leader :desc "Main"           "d m" (lambda() (interactive) (find-file "~/org/main.org")))
 (map! :leader :desc "Tech Folder"    "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
-(map! :leader :desc "VS EV"          "d e" (lambda() (interactive) (find-file "~/org/Tech/EV.org")))
+(map! :leader :desc "SSH Config"     "d s" (lambda() (interactive) (find-file "~/.ssh/config")))
 (map! :leader :desc "laravel mode"   "d l" 'laravel-menu)
 
 (map! :leader :desc "Format Code"   "c f" 'lsp-format-buffer)
@@ -265,3 +309,6 @@
 (map! :leader :desc "Edit Snippet" "a e" 'yas-visit-snippet-file)
 
 (map! :leader :desc "Ace Window" "w w" 'ace-window)
+
+(map! :leader :desc "evilem down" "j" 'evilem-motion-next-line)
+(map! :leader :desc "evilem up" "k" 'evilem-motion-previous-line)

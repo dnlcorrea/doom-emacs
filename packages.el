@@ -44,10 +44,14 @@
 
 (package! exwm)
 (package! company-lsp)
+(package! company-box)
 (package! request)
 (package! spinner)
 (package! lsp-treemacs)
+(package! lsp-java)
 (package! evil-numbers)
+(package! dap-mode)
+;(package! dap-java)
 
 ;; Mein
 (package! larav.el :recipe (:host github :repo "dnlcorrea/larav.el"))

@@ -4,7 +4,8 @@
              ("Telegram" . "web.telegram.org")
              ("Meditative Mind" . "youtube.com/channel/UCM0YvsRfYfsniGAhjvYFOSA")
              ("Drive" . "drive.google.com/drive/u/1/")
-             ("Mail 31" . "mail.google.com/mail/u/1/#inbox")
+             ("Mail 31" . "mail.google.com/mail/u/2/#inbox")
+             ("NFS nota" . "nfse.pmfi.pr.gov.br/nfseweb/Login")
              ("Moosti" . "moosti.com")))
 
 (defun dnl-terminal()
@@ -119,6 +120,15 @@
   (when p (newline-and-indent)))
 
 (global-set-key (kbd "C-;") 'dnl-semicolon)
+
+
+(defun dnl-php-emmet()
+  (interactive)
+  (setq dnl-php-emmet-string (thing-at-point 'line t))
+  (kill-whole-line)
+  (insert
+   (shell-command-to-string
+    (format "dnl-php %s" dnl-php-emmet-string))))
 
 ;; Utils
 
