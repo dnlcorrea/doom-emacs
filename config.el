@@ -220,7 +220,7 @@
   (push 'company-lsp company-backends))
 
 (use-package! company-box
-  :hook (company . company-box))
+  :hook (company-mode . company-box-mode))
 
 (use-package! company
   :config
