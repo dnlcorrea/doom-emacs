@@ -184,8 +184,6 @@
   ;;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
   ;;
 
-  (setq lsp-keymap-prefix "c-b")
-
   (add-to-list 'default-frame-alist '(alpha 95))
   (display-time-mode 1)
   (exwm-enable)
@@ -193,7 +191,7 @@
   ;; There are two ways to load a theme. Both assume the theme is installed and
   ;; available. You can either set `doom-theme' or manually load a theme with the
   ;; `load-theme' function. These are the defaults.
-  (setq doom-theme 'doom-opera))
+  (setq doom-theme 'doom-city-lights))
 
 (load! "dnl-functions")
 (load! "dnl-php")
@@ -224,7 +222,8 @@
 
 (use-package! company
   :config
-  (setq company-async-timeout 2))
+  (global-set-key "\C-k" 'company-complete-common)
+  (setq company-idle-delay .2))
 
 (use-package! lsp-treemacs :commands lsp-treemacs-errors-list)
 
@@ -312,3 +311,6 @@
 
 (map! :leader :desc "evilem down" "j" 'evilem-motion-next-line)
 (map! :leader :desc "evilem up" "k" 'evilem-motion-previous-line)
+
+
+(map! :leader :desc "Treemacs Symbols" "o s" 'lsp-treemacs-symbols)

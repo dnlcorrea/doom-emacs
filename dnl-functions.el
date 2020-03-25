@@ -216,3 +216,11 @@
 (defun dnl-today()
   (interactive)
   (insert (format-time-string "%Y/%m/%d")))
+
+(defun awk-sort(&optional b e)
+  (interactive "r")
+  (shell-command-on-region
+   b e
+   "awk '{ print length(), $0 | \"sort -n | cut -d\\\\  -f2-\" }'"
+   :replace t))
+   ;;
