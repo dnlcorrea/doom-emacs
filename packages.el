@@ -52,6 +52,8 @@
 (package! evil-numbers)
 (package! dap-mode)
 ;(package! dap-java)
+;
+(package! keyfreq :recipe (:host github :repo "dacap/keyfreq"))
 
 ;; Mein
 (package! larav.el :recipe (:host github :repo "dnlcorrea/larav.el"))

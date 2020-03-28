@@ -20,6 +20,13 @@
             (dnl-terminal-huge nil)))
         (buffer-list)))
 
+(defun dnl-theme-terminal()
+  (interactive)
+  (let
+      ((theme (shell-command-to-string
+              "ls -1 /home/daniel/.oh-my-zsh/themes | cut -d . -f 1 | rofi -dmenu 2> /dev/null | xargs echo -n")))
+    (start-process-shell-command "huahua" nil (format "ZSH_THEME='%s' urxvt" theme))))
+
 
 ;; (defun dnl-floating-term()
 ;;   (interactive)
@@ -125,10 +132,14 @@
 (defun dnl-php-emmet()
   (interactive)
   (setq dnl-php-emmet-string (thing-at-point 'line t))
+  (setq dnl--emmet-prog "dnl-php")
   (kill-whole-line)
+  (if (member major-mode '(php-mode))
+      (setq dnl--emmet-prog "dnl-php")
+      (setq dnl--emmet-prog "dnl-java"))
   (insert
    (shell-command-to-string
-    (format "dnl-php %s" dnl-php-emmet-string))))
+    (concat dnl--emmet-prog " " dnl-php-emmet-string))))
 
 ;; Utils
 
@@ -224,3 +235,21 @@
    "awk '{ print length(), $0 | \"sort -n | cut -d\\\\  -f2-\" }'"
    :replace t))
    ;;
+
+
+(defun dnl-commander-window()
+  (interactive)
+  (split-window nil 4 'above)
+  (start-process-shell-command
+   "dnl-commander"
+   "dnl-commander"
+   "urxvt -fn 'xft:Iosevka Term:size=24' -e bash --rcfile ~/.dnlbashrc"))
+
+(defun dnl-project ()
+  (interactive)
+  (counsel-projectile-switch-project)
+  (split-window nil 50 'right)
+  (start-process-shell-command "lol" nil "urxvt -fn 'xft:Iosevka Term:size=12'")
+  (+treemacs/toggle))
+
+(map! :leader "d ." 'dnl-commander-window)
