@@ -200,7 +200,7 @@
   ;; There are two ways to load a theme. Both assume the theme is installed and
   ;; available. You can either set `doom-theme' or manually load a theme with the
   ;; `load-theme' function. These are the defaults.
-  (setq doom-theme 'doom-city-lights))
+  (setq doom-theme 'doom-molokai)
 
 (load! "dnl-functions")
 (load! "dnl-php")
@@ -222,7 +222,7 @@
         lsp-ui-sideline-enable t))
 
 (use-package! company-lsp
-  :hook (java-mode . company-lsp)
+  :hook (java-mode . company-mode)
   :config
   (push 'company-lsp company-backends))
 
@@ -236,7 +236,7 @@
 
 (use-package! lsp-treemacs :commands lsp-treemacs-errors-list)
 
-(add-hook! 'java #'lsp-java-boot-lens-mode)
+;;(add-hook! 'java #'lsp-java-boot-lens-mode)
 
 (use-package! treemacs
   :config
@@ -245,9 +245,12 @@
 (use-package! lsp
   :hook (web-mode . lsp)
   :commands lsp
-  :config
+  :after
   (define-key lsp-mode-map (kbd "s-l") nil))
 
+;; (use-package! treemacs
+;;   :config
+;;   (set-face-attribute 'hl-line nil))
 
 (use-package! dap-mode
   :after lsp
@@ -255,15 +258,15 @@
   (dap-mode t)
   (dap-ui-mode t))
 
+
 (use-package! lsp-java
-  :after lsp
   :hook (java-mode . lsp)
-  :init
+  :config
   (push 'company-lsp company-backends))
 
 (use-package! evil-numbers
   :commands 'evil-numbers
-  :init
+  :config
   (map! :leader :desc "Increment Number" "+" 'evil-numbers/inc-at-pt)
   (map! :leader :desc "Decrement Number" "-" 'evil-numbers/dec-at-pt))
 
@@ -275,3 +278,8 @@
   (keyfreq-autosave-mode 1))
 
 (load! "maps.el")
+
+;;; SQL
+(setq sql-user "root"
+      sql-password "dnl4307"
+      sql-server "localhost")

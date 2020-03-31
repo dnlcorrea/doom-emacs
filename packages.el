@@ -52,7 +52,8 @@
 (package! evil-numbers)
 (package! dap-mode)
 ;(package! dap-java)
-;
+
+(package! string-inflection :recipe (:host github :repo "akicho8/string-inflection"))
 (package! keyfreq :recipe (:host github :repo "dacap/keyfreq"))
 
 ;; Mein

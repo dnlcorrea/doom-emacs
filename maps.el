@@ -57,3 +57,6 @@
 (map! :leader :desc "Treemacs Symbols" "o s" 'lsp-treemacs-symbols)
 
 (map! :leader "\\" 'dnl-commander-window)
+
+;; Dired
+(evil-define-key 'normal dired-mode-map (kbd "o") 'dired-find-file-other-window)
