@@ -43,14 +43,14 @@
 ;(package! builtin-package :recipe (:branch "develop"))
 
 (package! exwm)
-(package! company-lsp)
-(package! company-box)
+;(package! company-lsp)
+;(package! company-box)
 (package! request)
 (package! spinner)
 (package! lsp-treemacs)
-(package! lsp-java)
+;(package! lsp-java)
 (package! evil-numbers)
-(package! dap-mode)
+;(package! dap-mode)
 ;(package! dap-java)
 
 (package! string-inflection :recipe (:host github :repo "akicho8/string-inflection"))

@@ -28,11 +28,9 @@
     (start-process-shell-command "huahua" nil (format "ZSH_THEME='%s' urxvt" theme))))
 
 
-;; (defun dnl-floating-term()
-;;   (interactive)
-;;   (start-process-shell-command "URxvt" "floater" "urxvt")
-;;   (exwm-floating--set-floating )
-;;   (exwm-floating-toggle-floating))
+(defun dnl-floating-term()
+  (interactive)
+  (start-process-shell-command "xterm" "floater" "xterm -class dnl-terminal"))
 
 (defun dnl-terminal-huge(a)
   "Open a Urxvt terminal.  With argument as A, open with huge font."
@@ -239,11 +237,11 @@
 
 (defun dnl-commander-window()
   (interactive)
-  (split-window nil 4 'above)
+  (split-window nil 6 'above)
   (start-process-shell-command
    "dnl-commander"
    "dnl-commander"
-   "urxvt -fn 'xft:Iosevka Term:size=24' -e bash --rcfile ~/.dnlbashrc"))
+   "urxvt -fn 'xft:Input Mono:size=18' -e bash --rcfile ~/.dnlbashrc"))
 
 (defun dnl-project ()
   (interactive)
@@ -252,4 +250,9 @@
   (start-process-shell-command "lol" nil "urxvt -fn 'xft:Iosevka Term:size=12'")
   (+treemacs/toggle))
 
-(map! :leader "d ." 'dnl-commander-window)
+(defun dnl-new-map()
+  (interactive)
+  (find-file "~/.doom.d/maps.el")
+  (goto-char (point-max))
+  (open-line 2)
+  (yas-expand-snippet (yas-lookup-snippet "map")))

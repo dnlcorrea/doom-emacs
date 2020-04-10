@@ -2,17 +2,36 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; DNL-MODE, MO'FO'
+(map! :leader :desc "Small Term"      "d ." 'dnl-commander-window)
 (map! :leader :desc "Toggle Floating" "d a" 'exwm-floating-toggle-floating)
 (map! :leader :desc "Invert Boolean"  "d b" 'dnl-invert-boolean)
+;; c
+;; d
 (map! :leader :desc "Emmet PHP"       "d e" 'dnl-php-emmet)
+;; f
 (map! :leader :desc "Goals"           "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
+;; h
+;; i
+;; j
+;; k
 (map! :leader :desc "laravel mode"    "d l" 'laravel-menu)
 (map! :leader :desc "Main"            "d m" (lambda() (interactive) (find-file "~/org/main.org")))
-(map! :leader :desc "Tech Folder"     "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
+(map! :leader :desc "Create new map"  "d n" 'dnl-new-map)
+;; o
+;; p
+;; q
+;; r
 (map! :leader :desc "SSH Config"      "d s" (lambda() (interactive) (find-file "~/.ssh/config")))
+(map! :leader :desc "Tech Folder"     "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
+;; u
+;; v
+;; x
+;; y
 (map! :leader :desc "Wiki"            "d w" (lambda() (interactive) (find-file "~/org/Life Wiki.org")))
+;;z
 
 (map! :leader :desc "Format Code"   "c f" 'lsp-format-buffer)
+
 
 (map! :leader :desc "Finance" "d f"
       (lambda()
@@ -58,5 +77,22 @@
 
 (map! :leader "\\" 'dnl-commander-window)
 
+(defun go-fuck-yourself()
+  (interactive)
+  (save-buffer)
+  (message "formatting")
+  (start-process-shell-command
+   "lol" nil (format "npx prettier --write %s" (buffer-file-name)))
+  (revert-buffer))
+
+
+(map! :map web-mode-map :leader "m p" 'go-fuck-yourself)
+
 ;; Dired
 (evil-define-key 'normal dired-mode-map (kbd "o") 'dired-find-file-other-window)
+
+(map! :leader "d i" 'string-inflection-cycle)
+
+(map! :i [tab] 'company-complete)
+
+(map! "M-y" 'yas-insert-snippet)

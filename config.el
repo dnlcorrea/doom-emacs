@@ -17,7 +17,7 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 ;; test
-(setq doom-font (font-spec :family "Source Code Pro" :size 16)
+(setq doom-font (font-spec :family "Liberation Mono" :size 14)
       doom-variable-pitch-font (font-spec :family "sans"))
 
 (setq org-directory "~/org/")
@@ -41,6 +41,8 @@
   :config
 
   (add-hook 'exwm-mode-hook #'doom-mark-buffer-as-real-h) ; Treats EXWM as real buffers
+
+  (evil-define-key 'normal dired-mode-map (kbd "o") 'dired-find-file-other-window)
 
   (exwm-input-set-key (kbd "s-<return>") #'dnl-terminal-huge)
   ;;(exwm-input-set-key (kbd "s-'") #'shell-command)
@@ -79,9 +81,13 @@
   (exwm-input-set-key (kbd "s-n") '+ivy/switch-buffer)
   (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
 
+  ;; Clock
+
   (exwm-input-set-key (kbd "s-'") (lambda () (interactive)(start-process-shell-command "pavucontrol" nil "pavucontrol")))
 
-  (setq exwm-manage-configurations '((t char-mode t)))
+  (setq exwm-manage-configurations '(
+  (t char-mode t)
+  ((string-match-p "dnl-term" exwm-title) floating t)))
 
   (setq exwm-workspace-number 10
         exwm-workspace-show-all-buffers nil
@@ -141,9 +147,9 @@
   (exwm-input-set-key (kbd "s-C-2") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr -m tv"))) ; TV
 
 
-  ;;(exwm-input-set-key (kbd "s-<home>") 'exwm-floating-toggle-floating)
+  (exwm-input-set-key (kbd "s-<f1>") (lambda () (interactive) (find-file "~/.doom.d/reference.el")))
+  (exwm-input-set-key (kbd "s-<f11>") (lambda () (interactive)(start-process-shell-command "timer" nil "urxvt -e tty-clock")))
   (exwm-input-set-key (kbd "s-<f3>") (lambda () (interactive) (start-process-shell-command "dia" nil "dia ~/Desktop/MAIN.dia")))
-  (exwm-input-set-key (kbd "s-<f4>") (lambda () (interactive) (start-process-shell-command "dia" nil "dia ~/Dropbox/31Solutions/UNIVERSIFICA/NUVEM_ORG.dia")))
   (exwm-input-set-key (kbd "s-<f5>") (lambda () (interactive) (find-file "~/.doom.d/config.el")))
   (exwm-input-set-key (kbd "s-<f6>") (lambda () (interactive) (find-file "~/org/main.org")))
   (exwm-input-set-key (kbd "s-<f9>") 'dnl-rain)
@@ -195,15 +201,13 @@
 
   (add-to-list 'default-frame-alist '(alpha 95))
   (display-time-mode 1)
-  (exwm-enable)
+  (exwm-enable))
 
   ;; There are two ways to load a theme. Both assume the theme is installed and
   ;; available. You can either set `doom-theme' or manually load a theme with the
   ;; `load-theme' function. These are the defaults.
   (setq doom-theme 'doom-molokai)
 
-(load! "dnl-functions")
-(load! "dnl-php")
 
 (use-package! lsp-ui
   :config
@@ -221,48 +225,23 @@
         lsp-ui-sideline-delay .8
         lsp-ui-sideline-enable t))
 
-(use-package! company-lsp
-  :hook (java-mode . company-mode)
-  :config
-  (push 'company-lsp company-backends))
+;; (use-package! company-lsp
+;;   :hook (java-mode . company-mode)
+;;   :hook (web-mode . company-mode)
+;;   :hook (php-mode . company-mode)
+;;   :config
+;;   (push 'company-lsp company-backends))
 
-(use-package! company-box
-  :hook (company-mode . company-box-mode))
-
-(use-package! company
-  :config
-  (global-set-key "\C-k" 'company-complete-common)
-  (setq company-idle-delay .2))
-
-(use-package! lsp-treemacs :commands lsp-treemacs-errors-list)
-
-;;(add-hook! 'java #'lsp-java-boot-lens-mode)
+;(use-package! company-box
+;:hook (company-mode . company-box-mode))
 
 (use-package! treemacs
   :config
-  (setq treemacs-position 'right))
+  (setq treemacs-position 'left))
 
-(use-package! lsp
-  :hook (web-mode . lsp)
-  :commands lsp
-  :after
+(use-package! lsp-mode
+  :config
   (define-key lsp-mode-map (kbd "s-l") nil))
-
-;; (use-package! treemacs
-;;   :config
-;;   (set-face-attribute 'hl-line nil))
-
-(use-package! dap-mode
-  :after lsp
-  :config
-  (dap-mode t)
-  (dap-ui-mode t))
-
-
-(use-package! lsp-java
-  :hook (java-mode . lsp)
-  :config
-  (push 'company-lsp company-backends))
 
 (use-package! evil-numbers
   :commands 'evil-numbers
@@ -277,9 +256,12 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
-(load! "maps.el")
 
 ;;; SQL
 (setq sql-user "root"
       sql-password "dnl4307"
       sql-server "localhost")
+
+(load! "maps.el")
+(load! "dnl-functions")
+(load! "dnl-php")

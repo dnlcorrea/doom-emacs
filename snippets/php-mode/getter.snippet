@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: getter
+# key: getter                                                                                  
+# --
+private $1 $$2;
+
+public function get${2:$(string-inflection-upper-camelcase-function yas-text)}():${1:type} {
+    return $this->${2:property};
+}
+
+public function set${2:$(string-inflection-upper-camelcase-function yas-text)}($1 $$2):void {
+    $this->$2 = $$2;
+}
