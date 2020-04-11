@@ -51,7 +51,6 @@
 ;; Remaps
 (map! :leader :desc "M-x" "x" 'counsel-M-x)
 
-(map! :desc "Locate" "C-SPC" 'counsel-locate)
 
 (map! :leader :desc "Kill Ring" "y" 'counsel-yank-pop)
 
@@ -93,6 +92,6 @@
 
 (map! :leader "d i" 'string-inflection-cycle)
 
-(map! :i [tab] 'company-complete)
+(map! :desc "Locate" "C-SPC" 'company-complete)
 
-(map! "M-y" 'yas-insert-snippet)
+(map! :ni "M-y" 'yas-insert-snippet)

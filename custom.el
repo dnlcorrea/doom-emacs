@@ -7,7 +7,7 @@
  ;; If there is more than one, they won't work right.
  '(php-$this ((t (:inherit php-constant :family "Terminess"))))
  '(php-constant ((t (:inherit font-lock-constant-face :family "Noto Sans Black"))))
- '(php-keyword ((t (:inherit font-lock-keyword-face :height 1.12 :family "OrangeBlossoms")))))
+ '(php-keyword ((t (:inherit font-lock-keyword-face :family "Input Mono Compressed")))))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
