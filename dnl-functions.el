@@ -6,7 +6,8 @@
              ("Drive" . "drive.google.com/drive/u/1/")
              ("Mail 31" . "mail.google.com/mail/u/2/#inbox")
              ("NFS nota" . "nfse.pmfi.pr.gov.br/nfseweb/Login")
-             ("Moosti" . "moosti.com")))
+             ("Pomodoro" . "pomofocus.io")
+             ("Trello" . "trello.com")))
 
 (defun dnl-terminal()
   (interactive)
@@ -48,13 +49,13 @@
   (start-process-shell-command
    "Google" nil
    (format "%s --new-window https://%s" "google-chrome-stable"
-           (assoc-default (ivy-read "URL: " urls) urls))))
+           (helm-comp-read "URL: " urls))))
 
 
 ;; (defun dnl-run()
 ;;   (interactive)
 ;;   (setq cmds (split-string (shell-command-to-string "whence -pm '*'") "\n"))
-;;   (setq run (ivy-read "RUN: " (mapcar (lambda (cmd) (file-name-nondirectory cmd)) cmds)))
+;;   (setq run (helm-comp-read "RUN: " (mapcar (lambda (cmd) (file-name-nondirectory cmd)) cmds)))
 ;;   (start-process-shell-command "RUN" nil run))
 
 (defun exwm-rename-buffer ()
@@ -110,7 +111,7 @@
     "urxvt -e ssh %s"
     (nth 1
          (split-string
-          (ivy-read "SSH Host: " (dnl--get-ssh-hosts)) " " t)))))
+          (helm-comp-read "SSH Host: " (dnl--get-ssh-hosts)) " " t)))))
 
 (defun dnl-rain()
   (interactive)
@@ -215,7 +216,7 @@
 (defun dnl-clipboard()
   (interactive)
   (kill-new
-   (ivy-read
+   (helm-comp-read
     "String: "
     (split-string
      (shell-command-to-string "greenclip print")
@@ -245,7 +246,7 @@
 
 (defun dnl-project ()
   (interactive)
-  (counsel-projectile-switch-project)
+  (helm-projectile-switch-project)
   (split-window nil 50 'right)
   (start-process-shell-command "lol" nil "urxvt -fn 'xft:Iosevka Term:size=12'")
   (+treemacs/toggle))

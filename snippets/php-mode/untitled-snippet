@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: yas-selected-text
+# uuid:  yas-selected-text
+# key: yst
+# condition: t
+# --
+(yas-selected-text)

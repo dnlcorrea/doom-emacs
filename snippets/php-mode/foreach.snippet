@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: foreach (...) {...}
+# key: fore
+# uuid: fore                                  
+# --
+foreach (${1:$itens} as ${3:$key =>} ${2:$item}) {
+    `(yas-selected-text)`$0
+}

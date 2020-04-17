@@ -50,11 +50,17 @@
 (package! lsp-treemacs)
 ;(package! lsp-java)
 (package! evil-numbers)
+(package! org-pomodoro)
+(package! org-superstar)
+(package! helm-ag)
+(package! helm-swoop)
 ;(package! dap-mode)
 ;(package! dap-java)
 
 (package! string-inflection :recipe (:host github :repo "akicho8/string-inflection"))
 (package! keyfreq :recipe (:host github :repo "dacap/keyfreq"))
+
+;;(package! tomatinho :recipe (:host github :repo "konr/tomatinho"))
 
 ;; Mein
 (package! larav.el :recipe (:host github :repo "dnlcorrea/larav.el"))

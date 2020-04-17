@@ -9,7 +9,7 @@
 ;; d
 (map! :leader :desc "Emmet PHP"       "d e" 'dnl-php-emmet)
 ;; f
-(map! :leader :desc "Goals"           "d g" (lambda() (interactive) (find-file "~/org/Tech/Goals.org")))
+;; g
 ;; h
 ;; i
 ;; j
@@ -27,8 +27,9 @@
 ;; v
 ;; x
 ;; y
-(map! :leader :desc "Wiki"            "d w" (lambda() (interactive) (find-file "~/org/Life Wiki.org")))
+;; w
 ;;z
+
 
 (map! :leader :desc "Format Code"   "c f" 'lsp-format-buffer)
 
@@ -46,13 +47,12 @@
 (map! :map web-mode-map
       :i "C-e" 'emmet-preview-mode
       :desc "Emmet Preview"
-      :leader "c a" 'emmet-preview-mode)
+      :leader "c p" 'emmet-preview-mode)
 
 ;; Remaps
-(map! :leader :desc "M-x" "x" 'counsel-M-x)
+(map! :leader :desc "M-x" "x" 'helm-M-x)
 
-
-(map! :leader :desc "Kill Ring" "y" 'counsel-yank-pop)
+(map! :leader :desc "Kill Ring" "y" 'helm-show-kill-ring)
 
 (map! :leader :desc "Eval last sexp" "m e j" 'eval-print-last-sexp)
 
@@ -64,7 +64,7 @@
 (map! :leader :desc "New Snippet" "a n" 'yas-new-snippet)
 (map! :leader :desc "Edit Snippet" "a e" 'yas-visit-snippet-file)
 
-(map! :leader "s m" 'counsel-evil-marks)
+(map! :leader "s m" 'helm-mark-ring)
 
 (map! :leader :desc "Ace Window" "w w" 'ace-window)
 
@@ -95,3 +95,11 @@
 (map! :desc "Locate" "C-SPC" 'company-complete)
 
 (map! :ni "M-y" 'yas-insert-snippet)
+(map!  "C-<backspace>" 'evil-change-whole-line)
+
+(map! :leader "c a" 'lsp-execute-code-action)
+
+(map! :map org-mode-map "<f12>" 'tomatinho)
+
+(map! :leader :desc "Increment Number" "+" 'evil-numbers/inc-at-pt)
+(map! :leader :desc "Decrement Number" "-" 'evil-numbers/dec-at-pt)

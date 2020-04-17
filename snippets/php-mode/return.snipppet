@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: return
+# uuid: return
+# key: ret
+# condition: t
+# --
+return $0;

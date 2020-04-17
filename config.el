@@ -48,18 +48,19 @@
   ;;(exwm-input-set-key (kbd "s-'") #'shell-command)
 
   ; Browsers
-  (exwm-input-set-key (kbd "s-g") (lambda () (interactive) (start-process-shell-command "Google" nil "google-chrome-stable --new-window")))
-  (exwm-input-set-key (kbd "s-G") (lambda () (interactive) (start-process-shell-command "Cacafire" nil "firefox")))
+  (exwm-input-set-key
+   (kbd "s-g")
+   (lambda (a) (interactive "p")
+     (when (= 4 a) (split-go-to-right))
+     (start-process-shell-command "Chrome" nil "google-chrome-stable --new-window")))
 
   ; Navigation
-  (exwm-input-set-key (kbd "s-x") 'counsel-M-x)
+  (exwm-input-set-key (kbd "s-x") 'helm-M-x)
   (exwm-input-set-key (kbd "s-/") 'exwm-layout-toggle-fullscreen)
   (exwm-input-set-key (kbd "s-,") 'evil-prev-buffer)
   (exwm-input-set-key (kbd "s-.") 'evil-next-buffer)
 
   (exwm-input-set-key (kbd "s-<f2>")  (lambda () (interactive) (start-process-shell-command "urxvt" nil "urxvt -e htop")))
-
-  (exwm-input-set-key (kbd "M-SPC") 'dnl-search)
 
   (exwm-input-set-key (kbd "s-e") 'dnl-urls)
 
@@ -78,7 +79,7 @@
   (exwm-input-set-key (kbd "s-o") 'other-frame)
   (exwm-input-set-key (kbd "s-=") 'balance-windows)
   (exwm-input-set-key (kbd "s-m") 'doom/switch-to-scratch-buffer)
-  (exwm-input-set-key (kbd "s-n") '+ivy/switch-buffer)
+  (exwm-input-set-key (kbd "s-n") 'helm-mini)
   (exwm-input-set-key (kbd "s-c") 'kill-this-buffer)
 
   ;; Clock
@@ -87,7 +88,7 @@
 
   (setq exwm-manage-configurations '(
   (t char-mode t)
-  ((string-match-p "dnl-term" exwm-title) floating t)))
+  ((string-match-p "dnl-terminal" exwm-class-name) floating t)))
 
   (setq exwm-workspace-number 10
         exwm-workspace-show-all-buffers nil
@@ -95,7 +96,7 @@
         doom-scratch-buffer-major-mode 'emacs-lisp-mode
         exwm-randr-workspace-monitor-plist
           '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "HDMI1" 5 "HDMI1"
-            6 "eDP1" 7 "eDP1" 8 "eDP1" 9 "eDP1"))
+            6 "HDMI1" 7 "HDMI1" 8 "eDP1" 9 "eDP1"))
 
 
   ; Workspaces
@@ -137,7 +138,7 @@
    (lambda() (interactive)
      (start-process-shell-command "lol" nil "urxvt -e $(rofi -show drun)")))
 
-  (exwm-input-set-key (kbd "s-y") 'counsel-yank-pop)
+  (exwm-input-set-key (kbd "s-y") 'helm-kill-new)
   (exwm-input-set-key (kbd "s-<backspace>") 'dnl-clipboard)
 
   ;;; Options for screen resolution
@@ -249,13 +250,19 @@
   (map! :leader :desc "Increment Number" "+" 'evil-numbers/inc-at-pt)
   (map! :leader :desc "Decrement Number" "-" 'evil-numbers/dec-at-pt))
 
+(use-package! lsp-java
+  :config
+  (require 'lsp-java-boot)
+  (setq lsp-java-vmargs '("-noverify" "-Xmx1G" "-XX:+UseG1GC" "-XX:+UseStringDeduplication" "-javaagent:/home/daniel/java/libs/lombok.jar")))
+
 (use-package! ledger-mode :bind ("C-TAB" . ledger-post-align-xact))
+
+(use-package! string-inflection)
 
 (use-package! keyfreq
   :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
-
 
 ;;; SQL
 (setq sql-user "root"
@@ -265,3 +272,53 @@
 (load! "maps.el")
 (load! "dnl-functions")
 (load! "dnl-php")
+
+;;; Popups
+;https://github.com/hlissner/doom-emacs/issues/1086#issuecomment-463511339
+(set-popup-rule! "\\*compilation\\*" :ignore t)
+
+
+(use-package! helm-swoop
+  :config
+  ;; Change the keybinds to whatever you like :)
+  ;; Vd. maps.el
+  (map! :leader :desc "Helm Swoop"      "d w" 'helm-swoop)
+  (map! :leader :desc "Helm Swoop"      "d W" 'helm-swoop-back-to-last-point)
+  (global-set-key (kbd "C-c M-i") 'helm-multi-swoop)
+  (global-set-key (kbd "C-x M-i") 'helm-multi-swoop-all)
+
+  ;; From helm-swoop to helm-multi-swoop-all
+  (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
+  ;; When doing evil-search, hand the word over to helm-swoop
+  (define-key evil-motion-state-map (kbd "M-i") 'helm-swoop-from-evil-search)
+
+  ;; Instead of helm-multi-swoop-all, you can also use helm-multi-swoop-current-mode
+  (define-key helm-swoop-map (kbd "M-m") 'helm-multi-swoop-current-mode-from-helm-swoop)
+
+  ;; Move up and down like isearch
+  (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
+  (define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
+  (define-key helm-multi-swoop-map (kbd "C-r") 'helm-previous-line)
+  (define-key helm-multi-swoop-map (kbd "C-s") 'helm-next-line)
+
+  ;; Save buffer when helm-multi-swoop-edit complete
+  (setq helm-multi-swoop-edit-save t)
+
+  ;; If this value is t, split window inside the current window
+  (setq helm-swoop-split-with-multiple-windows nil)
+
+  ;; Split direcion. 'split-window-vertically or 'split-window-horizontally
+  (setq helm-swoop-split-direction 'split-window-vertically)
+
+  ;; If nil, you can slightly boost invoke speed in exchange for text color
+  ;;(setq helm-swoop-speed-or-color nil)
+
+  ;; ;; Go to the opposite side of line from the end or beginning of line
+  (setq helm-swoop-move-to-line-cycle t)
+
+  ;; Optional face for line numbers
+  ;; Face name is `helm-swoop-line-number-face`
+  (setq helm-swoop-use-line-number-face t)
+
+  ;; If you prefer fuzzy matching
+  (setq helm-swoop-use-fuzzy-match t))
