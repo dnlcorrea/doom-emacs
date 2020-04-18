@@ -54,6 +54,8 @@
 (package! org-superstar)
 (package! helm-ag)
 (package! helm-swoop)
+(package! phpactor)
+(package! company-phpactor)
 ;(package! dap-mode)
 ;(package! dap-java)
 

@@ -212,19 +212,33 @@
 
 (use-package! lsp-ui
   :config
-  (setq lsp-ui-doc-enable t
-        lsp-ui-doc-use-childframe nil
-        lsp-ui-doc-position 'right
-        lsp-ui-doc-include-signature nil
-        lsp-ui-sideline-enable t
-        lsp-ui-flycheck-enable t
-        lsp-ui-flycheck-list-position 'right
-        lsp-flycheck-live-reporting t
-        lsp-ui-peek-list-width 60
-        lsp-ui-peek-peek-height 25
-        lsp-enable-file-watchers nil
-        lsp-ui-sideline-delay .8
-        lsp-ui-sideline-enable t))
+  (setq
+   lsp-enable-file-watchers nil
+
+   lsp-ui-doc-enable t
+   lsp-ui-doc-position 'top
+   lsp-ui-doc-include-signature t
+   lsp-ui-doc-use-childframe nil
+   lsp-ui-doc-header t
+
+   lsp-ui-flycheck-enable t
+   lsp-ui-flycheck-list-position 'left
+   lsp-flycheck-live-reporting t
+
+   lsp-ui-peek-enable t
+   lsp-ui-peek-list-width 60
+   lsp-ui-peek-peek-height 25
+
+   lsp-ui-sideline-delay 1.2
+   lsp-ui-sideline-enable t
+   lsp-ui-sideline-enable t
+   lsp-ui-sideline-show-diagnostics t
+   lsp-ui-sideline-show-hover t
+   lsp-ui-sideline-show-symbol t)
+
+  (map! :n "M-." 'lsp-ui-peek-find-definitions)
+  (map! :n "M-/" 'lsp-ui-peek-find-references))
+
 
 ;; (use-package! company-lsp
 ;;   :hook (java-mode . company-mode)
@@ -322,3 +336,36 @@
 
   ;; If you prefer fuzzy matching
   (setq helm-swoop-use-fuzzy-match t))
+
+(map! :leader "c p" 'php-transient-menu)
+
+(use-package! transient
+  :config
+  (define-transient-command php-transient-menu ()
+    "Php"
+    [["Class"
+      ("cc" "Copy" phpactor-copy-class)
+      ("cn" "New" phpactor-create-new-class)
+      ("cr" "Move" phpactor-move-class)
+      ("ci" "Inflect" phpactor-inflect-class)
+      ("n"  "Namespace" phpactor-fix-namespace)]
+     ["Properties"
+      ("a"  "Accessor" phpactor-generate-accessors)
+      ("pc" "Constructor" phpactor-complete-constructor)
+      ("pm" "Add missing props" phpactor-complete-properties)
+      ("r" "Rename var locally" phpactor-rename-variable-local)
+      ("R" "Rename var in file" phpactor-rename-variable-file)]
+     ["Extract"
+      ("ec" "constant" phpactor-extract-constant)
+      ("ee" "expression" phpactor-extract-expression)
+      ("em"  "method" phpactor-extract-method)]
+     ["Methods"
+      ("i" "Implement Contracts" phpactor-implement-contracts)
+      ("m"  "Generate method" phpactor-generate-method)]
+     ["Navigate"
+      ("x" "List refs" phpactor-list-references)
+      ("X" "Replace refs" phpactor-replace-references)
+      ("."  "Goto def" phpactor-goto-definition)]
+     ["Phpactor"
+      ("s" "Status" phpactor-status)
+      ("u" "Install" phpactor-install-or-update)]]))

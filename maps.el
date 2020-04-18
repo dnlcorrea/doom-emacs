@@ -103,3 +103,4 @@
 
 (map! :leader :desc "Increment Number" "+" 'evil-numbers/inc-at-pt)
 (map! :leader :desc "Decrement Number" "-" 'evil-numbers/dec-at-pt)
+(map! :leader "7" 'async-shell-command)

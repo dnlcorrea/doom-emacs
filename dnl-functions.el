@@ -134,11 +134,11 @@
   (setq dnl--emmet-prog "dnl-php")
   (kill-whole-line)
   (if (member major-mode '(php-mode))
-      (setq dnl--emmet-prog "dnl-php")
+      (setq dnl--emmet-prog "zen-php")
       (setq dnl--emmet-prog "dnl-java"))
   (insert
    (shell-command-to-string
-    (concat dnl--emmet-prog " " dnl-php-emmet-string))))
+    (concat dnl--emmet-prog " " (shell-quote-argument dnl-php-emmet-string)))))
 
 ;; Utils
 
