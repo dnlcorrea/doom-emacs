@@ -138,7 +138,8 @@
       (setq dnl--emmet-prog "dnl-java"))
   (insert
    (shell-command-to-string
-    (concat dnl--emmet-prog " " (shell-quote-argument dnl-php-emmet-string)))))
+    (concat dnl--emmet-prog " " (shell-quote-argument dnl-php-emmet-string))))
+  (indent-region (point-min) (point-max)))
 
 ;; Utils
 
