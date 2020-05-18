@@ -8,7 +8,7 @@
 ;; c
 ;; d
 (map! :leader :desc "Emmet PHP"       "d e" 'dnl-php-emmet)
-;; f
+(map! :leader :desc "Helm RG"         "d f" 'helm-rg)
 ;; g
 ;; h
 ;; i
@@ -18,12 +18,12 @@
 (map! :leader :desc "Main"            "d m" (lambda() (interactive) (find-file "~/org/main.org")))
 (map! :leader :desc "Create new map"  "d n" 'dnl-new-map)
 ;; o
-;; p
+(map! :leader :desc "Org Pomodoro"    "d p" 'org-pomodoro)
 ;; q
 ;; r
 (map! :leader :desc "SSH Config"      "d s" (lambda() (interactive) (find-file "~/.ssh/config")))
 (map! :leader :desc "Tech Folder"     "d t" (lambda() (interactive) (find-file "~/org/Tech/")))
-;; u
+(map! :leader :desc "SubWord Mode"    "d u" 'subword-mode)
 ;; v
 ;; x
 ;; y
@@ -37,9 +37,8 @@
 (map! :leader :desc "Finance" "d f"
       (lambda()
         (interactive)
-        (find-file (format "~/finance/%s/%s/%s-main.ledger"
+        (find-file (format "~/finance/%s/%s/main.ledger"
                            (format-time-string "%Y")
-                           (format-time-string "%m-%b")
                            (format-time-string "%m-%b")))))
 
 (map! :desc "Emmet, activate!" "M-e" 'emmet-expand-line)
@@ -55,6 +54,7 @@
 (map! :leader :desc "Kill Ring" "y" 'helm-show-kill-ring)
 
 (map! :leader :desc "Eval last sexp" "m e j" 'eval-print-last-sexp)
+(map! :leader :desc "Eval last sexp" "m e e" 'eval-last-sexp)
 
 ;; YAS
 (map! "C-l" 'yas-expand)
@@ -74,7 +74,9 @@
 
 (map! :leader :desc "Treemacs Symbols" "o s" 'lsp-treemacs-symbols)
 
-(map! :leader "\\" 'dnl-commander-window)
+(setq company-backends '(company-yasnippet))
+
+(map! :leader "\\" 'dnl-floating-term)
 
 (defun go-fuck-yourself()
   (interactive)
@@ -86,6 +88,8 @@
 
 
 (map! :map web-mode-map :leader "m p" 'go-fuck-yourself)
+
+(map! :map ledger-mode-map :leader "m a" 'dnl-ledger-insert)
 
 ;; Dired
 (evil-define-key 'normal dired-mode-map (kbd "o") 'dired-find-file-other-window)
@@ -99,8 +103,8 @@
 
 (map! :leader "c a" 'lsp-execute-code-action)
 
-(map! :map org-mode-map "<f12>" 'tomatinho)
-
 (map! :leader :desc "Increment Number" "+" 'evil-numbers/inc-at-pt)
 (map! :leader :desc "Decrement Number" "-" 'evil-numbers/dec-at-pt)
 (map! :leader "7" 'async-shell-command)
+(map! :leader "c o" 'xref-find-definitions-other-window)
+(map! :leader "m m p" 'org-latex-export-to-pdf)

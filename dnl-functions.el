@@ -28,6 +28,35 @@
               "ls -1 /home/daniel/.oh-my-zsh/themes | cut -d . -f 1 | rofi -dmenu 2> /dev/null | xargs echo -n")))
     (start-process-shell-command "huahua" nil (format "ZSH_THEME='%s' urxvt" theme))))
 
+(defun dnl-terminator(a)
+  (interactive "P")
+  (if a (cd (read-directory-name "cd --> ")))
+  (delete-other-windows)
+  (start-process-shell-command "Ala3" nil "alacritty")
+  (sleep-for .1)
+  (split-window)
+  (evil-window-down 1)
+  (start-process-shell-command "Ala3" nil "alacritty")
+  (sleep-for .1)
+  (split-window nil nil 'right)
+  (evil-window-right 1)
+  (start-process-shell-command "Ala3" nil "alacritty")
+  (sleep-for .1)
+  (evil-window-up 1)
+  (split-window nil nil 'right)
+  (evil-window-right 1)
+  (start-process-shell-command "Ala3" nil "alacritty")
+  (sleep-for .1)
+  (evil-window-left 1))
+
+  ;; (setq W2 )
+  ;; (setq W3 (split-window W1 nil 'right))
+  ;; (set-window-buffer W1 (get-buffer "Ala1"))
+  ;; (switch-to-buffer-other-window (start-process-shell-command "Ala1" "Ala1" "alacritty"))
+  ;; (switch-to-buffer-other-window (start-process-shell-command "Ala2" "Ala2" "alacritty"))
+  ;; (with-selected-window W1 (switch-to-buffer "Ala\*"))
+  ;; (with-selected-window W2 )
+  ;; (with-selected-window W2 (start-process-shell-command "Ala3" nil "alacritty")))
 
 (defun dnl-floating-term()
   (interactive)
@@ -258,3 +287,10 @@
   (goto-char (point-max))
   (open-line 2)
   (yas-expand-snippet (yas-lookup-snippet "map")))
+
+(defun dnl-ledger-insert ()
+  (interactive)
+  (insert (helm-comp-read
+    "Account: "
+    (split-string
+     (shell-command-to-string "ledger accounts") "\n"))))

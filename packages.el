@@ -43,6 +43,7 @@
 ;(package! builtin-package :recipe (:branch "develop"))
 
 (package! exwm)
+(package! yaml-mode)
 ;(package! company-lsp)
 ;(package! company-box)
 (package! request)
@@ -51,12 +52,17 @@
 ;(package! lsp-java)
 (package! evil-numbers)
 (package! org-pomodoro)
-(package! org-superstar)
+(package! org-journal)
 (package! helm-ag)
 (package! helm-swoop)
+(package! sound-wav)
 (package! phpactor)
+(package! plantuml-mode)
 (package! company-phpactor)
-;(package! dap-mode)
+(package! helm-exwm)
+(package! dap-mode)
+(package! vue-mode)
+(package! prettier-js)
 ;(package! dap-java)
 
 (package! string-inflection :recipe (:host github :repo "akicho8/string-inflection"))
@@ -65,4 +71,4 @@
 ;;(package! tomatinho :recipe (:host github :repo "konr/tomatinho"))
 
 ;; Mein
-(package! larav.el :recipe (:host github :repo "dnlcorrea/larav.el"))
+;;(package! larav.el :recipe (:host github :repo "dnlcorrea/larav.el"))

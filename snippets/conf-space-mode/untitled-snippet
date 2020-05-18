@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: host
+# uuid: host
+# key: host
+# condition: t
+# --
+Host $1
+HostName $1
+User $2
+IdentityFile ~/.ssh/$1
