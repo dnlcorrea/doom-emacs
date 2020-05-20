@@ -5,7 +5,7 @@
 (map! :leader :desc "Small Term"      "d ." 'dnl-commander-window)
 (map! :leader :desc "Toggle Floating" "d a" 'exwm-floating-toggle-floating)
 (map! :leader :desc "Invert Boolean"  "d b" 'dnl-invert-boolean)
-;; c
+(map! :leader :desc "Fish Config"     "d c" 'dnl-fish)
 ;; d
 (map! :leader :desc "Emmet PHP"       "d e" 'dnl-php-emmet)
 (map! :leader :desc "Helm RG"         "d f" 'helm-rg)
@@ -108,3 +108,5 @@
 (map! :leader "7" 'async-shell-command)
 (map! :leader "c o" 'xref-find-definitions-other-window)
 (map! :leader "m m p" 'org-latex-export-to-pdf)
+
+(map! :leader "*" 'helm-rg)

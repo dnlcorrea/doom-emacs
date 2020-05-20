@@ -6,6 +6,39 @@
 
 ;;(require 'cl)
 
+(use-package! transient
+  :config
+  (define-transient-command php-transient-menu ()
+    "Php"
+    [["Class"
+      ("cc" "Copy" phpactor-copy-class)
+      ("cn" "New" phpactor-create-new-class)
+      ("cr" "Move" phpactor-move-class)
+      ("ci" "Inflect" phpactor-inflect-class)
+      ("n"  "Namespace" phpactor-fix-namespace)]
+     ["Properties"
+      ("a"  "Accessor" phpactor-generate-accessors)
+      ("pc" "Constructor" phpactor-complete-constructor)
+      ("pm" "Add missing props" phpactor-complete-properties)
+      ("r" "Rename var locally" phpactor-rename-variable-local)
+      ("R" "Rename var in file" phpactor-rename-variable-file)]
+     ["Extract"
+      ("ec" "constant" phpactor-extract-constant)
+      ("ee" "expression" phpactor-extract-expression)
+      ("em"  "method" phpactor-extract-method)]
+     ["Methods"
+      ("i" "Implement Contracts" phpactor-implement-contracts)
+      ("m"  "Generate method" phpactor-generate-method)]
+     ["Navigate"
+      ("x" "List refs" phpactor-list-references)
+      ("X" "Replace refs" phpactor-replace-references)
+      ("."  "Goto def" phpactor-goto-definition)]
+     ["Phpactor"
+      ("s" "Status" phpactor-status)
+      ("u" "Install" phpactor-install-or-update)]])
+  (map! :leader "c p" 'php-transient-menu))
+
+
 ;; Check if some class is being used in current file
 (defun php-class-is-being-used ()
   (save-excursion

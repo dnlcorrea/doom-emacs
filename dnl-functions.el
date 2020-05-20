@@ -21,6 +21,10 @@
             (dnl-terminal-huge nil)))
         (buffer-list)))
 
+(defun dnl-fish ()
+  (interactive)
+  (doom-project-find-file "~/.config/fish"))
+
 (defun dnl-theme-terminal()
   (interactive)
   (let

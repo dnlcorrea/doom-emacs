@@ -47,7 +47,7 @@
   (exwm-input-set-key (kbd "s-<return>") (lambda() (interactive) (start-process-shell-command "Term" nil "alacritty")))
   ;;(exwm-input-set-key (kbd "s-'") #'shell-command)
 
-  ; Browsers
+                                        ; Browsers
   (exwm-input-set-key
    (kbd "s-g")
    (lambda (a) (interactive "p")
@@ -55,7 +55,7 @@
      (start-process-shell-command "Chrome" nil "google-chrome-stable --new-window")))
 
 
-  ; Navigation
+                                        ; Navigation
   (exwm-input-set-key (kbd "s-x") 'helm-M-x)
   (exwm-input-set-key (kbd "s-/") 'exwm-layout-toggle-fullscreen)
   (exwm-input-set-key (kbd "s-,") 'evil-prev-buffer)
@@ -98,11 +98,11 @@
         exwm-workspace-show-all-buffers t
         doom-scratch-buffer-major-mode 'emacs-lisp-mode
         exwm-randr-workspace-monitor-plist
-          '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "HDMI1" 5 "HDMI1"
+        '(0 "HDMI1" 1 "HDMI1" 2 "HDMI1" 3 "HDMI1" 4 "HDMI1" 5 "HDMI1"
             6 "HDMI1" 7 "HDMI1" 8 "eDP1" 9 "eDP1"))
 
 
-  ; Workspaces
+                                        ; Workspaces
   (exwm-input-set-key (kbd "s-t") 'exwm-workspace-move-window)
   (exwm-input-set-key (kbd "s-w") 'exwm-workspace-switch)
   (exwm-input-set-key (kbd "s-0") (lambda () (interactive)(exwm-workspace-switch-create 0)))
@@ -141,10 +141,9 @@
   (exwm-randr-enable)
 
   ;; Frame opacity
-  (add-to-list 'default-frame-alist '(alpha . (85 . 50)))
+  (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
 
   (exwm-input-set-key (kbd "s-u") 'universal-argument)
-
 
   (setq flycheck-mode-hook nil)
 
@@ -165,7 +164,6 @@
   (exwm-input-set-key (kbd "s-C-1") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr -m fodao"))) ; Fodao
   (exwm-input-set-key (kbd "s-C-2") (lambda () (interactive) (dnl--command "/home/daniel/bin/xr -m tv"))) ; TV
   (exwm-input-set-key (kbd "s-C-3") (lambda () (interactive) (dnl--command "pactl set-card-profile 0 output:hdmi-stereo+input:analog-stereo"))) ; Fonao
-
 
   (exwm-input-set-key (kbd "s-<f1>") (lambda () (interactive) (find-file "~/.doom.d/reference.el")))
   (exwm-input-set-key (kbd "s-<f3>") (lambda () (interactive) (start-process-shell-command "dia" nil "dia ~/Desktop/MAIN.dia")))
@@ -197,13 +195,10 @@
 
   (add-hook 'exwm-mode-hook (lambda () (setq mode-line-format nil)))
 
-  (require 'exwm-systemtray)
-  (exwm-systemtray-enable)
+  ;; (require 'exwm-systemtray)
+  ;; (exwm-systemtray-enable)
 
-
-  (add-to-list 'auto-mode-alist
-               '("\\.vue\\'" . web-mode)
-               '("\\.fish\\'" . sh-mode))
+  (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode) '("\\.fish\\'" . sh-mode))
 
   (start-process-shell-command "picom" nil "picom")
   (start-process-shell-command "nm-applet" nil "nm-applet")
@@ -211,12 +206,13 @@
   (start-process-shell-command "greenclip daemon" nil "greenclip daemon")
   (start-process-shell-command "udiskie" nil "udiskie --tray")
   (start-process-shell-command "blueman" nil "blueman-applet")
-  ;(start-process-shell-command "cbatticon" nil "cbatticon")
+                                        ;(start-process-shell-command "cbatticon" nil "cbatticon")
   (start-process-shell-command "pasystray" nil "pasystray")
   ;;(start-process-shell-command "redshift" nil "redshift-gtk")
 
   (call-process-shell-command "(sleep 10s && ~/.dropbox-dist/dropboxd) &" nil 0)
   (call-process-shell-command "(sleep 5s && dunst) &" nil 0)
+  (call-process-shell-command "(sleep 5s && polybar) &" nil 0)
   ;;(start-process-shell-command "camera" "camera" "bash ~/Dropbox/Geekery/dogs.sh")
   ;;
 
@@ -227,13 +223,24 @@
 
   ;; Plantuml
   (setq org-plantuml-jar-path (expand-file-name "~/bin/plantuml")
-        plantuml-jar-path (expand-file-name "~/bin/plantuml")))
+        plantuml-jar-path (expand-file-name "~/bin/plantuml"))
+
+  (defun dw/send-polybar-hook (name number)
+    (start-process-shell-command "polybar-msg" nil (format "polybar-msg hook %s %s" name number)))
+
+  (defun dw/update-polybar-exwm ()
+    (dw/send-polybar-hook "exwm" 1))
+
+  (add-hook 'exwm-workspace-switch-hook #'dw/update-polybar-exwm)
+
+  (defun dw/polybar-exwm-workspace ()
+    (format "[ %s ]" exwm-workspace-current-index)))
 
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. These are the defaults.
-(setq doom-theme 'doom-Iosvkem)
+(setq doom-theme 'doom-fairy-floss)
 
 
 (use-package! lsp-ui
@@ -305,7 +312,8 @@
 
 (use-package! helm
   :config
-  (setq helm-split-window-default-side 'right))
+  (setq helm-split-window-default-side 'right
+        helm-ff-auto-update-initial-value t))
 
 ;;; lsp java
 (use-package! lsp-java
@@ -330,92 +338,37 @@
 
 
 ;;; Popups
-                                        ;https://github.com/hlissner/doom-emacs/issues/1086#issuecomment-463511339
+;; https://github.com/hlissner/doom-emacs/issues/1086#issuecomment-463511339
 (set-popup-rule! "\\*compilation\\*" :ignore t)
 (set-popup-rule! "\\*PLANTUML Preview\\*" :ignore t)
 (set-popup-rule! "\\*Ledger Report\\*" :ignore t)
-(set-popup-rule! "\\*[hH]elm\\*" :ignore t)
+;(set-popup-rule! "\\*[hH]elm\\*" :ignore t)
 
 
 (use-package! helm-swoop
   :config
-  ;; Change the keybinds to whatever you like :)
-  ;; Vd. maps.el
   (map! :leader "/" 'helm-swoop)
   (map! :leader :desc "Helm Swoop"      "d W" 'helm-swoop-back-to-last-point)
 
   (global-set-key (kbd "C-c M-i") 'helm-multi-swoop)
-  (global-set-key (kbd "C-x M-i") 'helm-multi-swoop-all))
+  (global-set-key (kbd "C-x M-i") 'helm-multi-swoop-all)
 
+  (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
+  (define-key evil-motion-state-map (kbd "M-i") 'helm-swoop-from-evil-search)
 
-;; From helm-swoop to helm-multi-swoop-all
-(define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
-;; When doing evil-search, hand the word over to helm-swoop
-(define-key evil-motion-state-map (kbd "M-i") 'helm-swoop-from-evil-search)
+  (define-key helm-swoop-map (kbd "M-m") 'helm-multi-swoop-current-mode-from-helm-swoop)
 
-;; Instead of helm-multi-swoop-all, you can also use helm-multi-swoop-current-mode
-(define-key helm-swoop-map (kbd "M-m") 'helm-multi-swoop-current-mode-from-helm-swoop)
+  (define-key helm-swoop-map (kbd "C-p") 'helm-previous-line)
+  (define-key helm-swoop-map (kbd "C-n") 'helm-next-line)
+  (define-key helm-multi-swoop-map (kbd "C-p") 'helm-previous-line)
+  (define-key helm-multi-swoop-map (kbd "C-n") 'helm-next-line)
 
-;; Move up and down like isearch
-(define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
-(define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
-(define-key helm-multi-swoop-map (kbd "C-r") 'helm-previous-line)
-(define-key helm-multi-swoop-map (kbd "C-s") 'helm-next-line)
+  (setq helm-multi-swoop-edit-save t) ; Save buffer when helm-multi-swoop-edit complete
+  (setq helm-swoop-split-direction 'split-window-vertically)
+  (setq helm-swoop-move-to-line-cycle t)
+  (setq helm-swoop-use-line-number-face t)
 
-;; Save buffer when helm-multi-swoop-edit complete
-(setq helm-multi-swoop-edit-save t)
-
-;; If this value is t, split window inside the current window
-(setq helm-swoop-split-with-multiple-windows nil)
-
-;; Split direcion. 'split-window-vertically or 'split-window-horizontally
-(setq helm-swoop-split-direction 'split-window-vertically)
-
-;; If nil, you can slightly boost invoke speed in exchange for text color
-;;(setq helm-swoop-speed-or-color nil)
-
-;; ;; Go to the opposite side of line from the end or beginning of line
-(setq helm-swoop-move-to-line-cycle t)
-
-;; Optional face for line numbers
-;; Face name is `helm-swoop-line-number-face`
-(setq helm-swoop-use-line-number-face t)
-
-;; If you prefer fuzzy matching
-(setq helm-swoop-use-fuzzy-match t)
-
-(map! :leader "c p" 'php-transient-menu)
-
-(use-package! transient
-  :config
-  (define-transient-command php-transient-menu ()
-    "Php"
-    [["Class"
-      ("cc" "Copy" phpactor-copy-class)
-      ("cn" "New" phpactor-create-new-class)
-      ("cr" "Move" phpactor-move-class)
-      ("ci" "Inflect" phpactor-inflect-class)
-      ("n"  "Namespace" phpactor-fix-namespace)]
-     ["Properties"
-      ("a"  "Accessor" phpactor-generate-accessors)
-      ("pc" "Constructor" phpactor-complete-constructor)
-      ("pm" "Add missing props" phpactor-complete-properties)
-      ("r" "Rename var locally" phpactor-rename-variable-local)
-      ("R" "Rename var in file" phpactor-rename-variable-file)]
-     ["Extract"
-      ("ec" "constant" phpactor-extract-constant)
-      ("ee" "expression" phpactor-extract-expression)
-      ("em"  "method" phpactor-extract-method)]
-     ["Methods"
-      ("i" "Implement Contracts" phpactor-implement-contracts)
-      ("m"  "Generate method" phpactor-generate-method)]
-     ["Navigate"
-      ("x" "List refs" phpactor-list-references)
-      ("X" "Replace refs" phpactor-replace-references)
-      ("."  "Goto def" phpactor-goto-definition)]
-     ["Phpactor"
-      ("s" "Status" phpactor-status)
-      ("u" "Install" phpactor-install-or-update)]]))
+  (setq helm-swoop-use-fuzzy-match t))
 
 (use-package! org-journal
   :config
